@@ -19,13 +19,19 @@ public class SevdeskService {
 
 	private final static String BASE_URL = "https://my.sevdesk.de/api/v1";
 
-	private final static String SECURITY_TOKEN = "?token=4bf578db00dbd24146a33a72f2ab8272";
+	private final static String SECURITY_TOKEN = "token=4bf578db00dbd24146a33a72f2ab8272";
 
-	private final static String ALL_CONTACTS_ENPOINT = "/Contact";
+	private final static String CONTACT_ENPOINT = "/Contact";
 
-	private final static String CONTACT_ADRESS_ENDPOINT = "/ContactAddress";
+	private final static String CONTACT_ADDRESS_ENDPOINT = "/ContactAddress";
+
+	private final static String CUSTOMER_NUMBER = "customerNumber=";
 
 	private final static String SLASH = "/";
+
+	private final static String AND_MARK = "&";
+
+	private final static String QUESTION_MARK = "?";
 
 	private final WebClient webClient;
 
@@ -43,7 +49,25 @@ public class SevdeskService {
 	 */
 	public Mono<JsonNode> getAllContacts() {
 
-		String uri = BASE_URL.concat(ALL_CONTACTS_ENPOINT).concat(SECURITY_TOKEN);
+		String uri = BASE_URL.concat(CONTACT_ENPOINT).concat(QUESTION_MARK).concat(SECURITY_TOKEN);
+		log.info("getAllContacts() -> uri: " + uri);
+
+		return jsonNode(uri);
+
+	}
+
+	/**
+	 * Get all Contact (kunden)
+	 * https://my.sevdesk.de/api/v1/Contact?customerNumber=1090&token=4bf578db00dbd24146a33a72f2ab8272
+	 * 
+	 * @param customerNumber
+	 * 
+	 * @return JsonNode all Addresses for a Contact
+	 */
+	public Mono<JsonNode> getAllAressesForContact(String customerNumber) {
+
+		String uri = BASE_URL.concat(CONTACT_ENPOINT).concat(QUESTION_MARK).concat(customerNumber)
+				.concat(customerNumber).concat(AND_MARK).concat(SECURITY_TOKEN);
 		log.info("getAllContacts() -> uri: " + uri);
 
 		return jsonNode(uri);
@@ -58,7 +82,7 @@ public class SevdeskService {
 	 */
 	public Mono<JsonNode> getAllContactAddress() {
 
-		String uri = BASE_URL.concat(CONTACT_ADRESS_ENDPOINT).concat(SECURITY_TOKEN);
+		String uri = BASE_URL.concat(CONTACT_ADDRESS_ENDPOINT).concat(QUESTION_MARK).concat(SECURITY_TOKEN);
 		log.info("getAllContactAddress() -> uri: " + uri);
 
 		return jsonNode(uri);
@@ -72,7 +96,7 @@ public class SevdeskService {
 	 * @return JsonNode a ContactAddress
 	 */
 	public Mono<JsonNode> getContactAddressbyId(String id) {
-		String uri = BASE_URL.concat(CONTACT_ADRESS_ENDPOINT).concat(SLASH).concat(id).concat(SLASH)
+		String uri = BASE_URL.concat(CONTACT_ADDRESS_ENDPOINT).concat(SLASH).concat(id).concat(SLASH)
 				.concat(SECURITY_TOKEN);
 		log.info("getContactAddressbyId() -> uri: " + uri);
 

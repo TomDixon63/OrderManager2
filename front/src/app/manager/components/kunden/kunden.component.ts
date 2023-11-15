@@ -13,21 +13,17 @@ export class KundenComponent {
 
   // array of contacts from api service
   contacts: Contact[] = [];
+  contactsCount = 0;
   loading: boolean = true;
   @ViewChild('filter') filter!: ElementRef;
 
 
 
   constructor(private backendService: BackendService, private mappingService: Mappingservice) {
-    /* this.customerService.getCustomersLarge().then(customers => {
-       this.customers1 = customers;
-       this.loading = false;
- 
-   }*/
-   
   }
 
   ngOnInit() {
+    
     this.getAllContacts();
     this.loading = false;
   }
@@ -44,6 +40,7 @@ export class KundenComponent {
       } else {
         this.contacts = [];
         this.contacts = this.mappingService.response2ContactsMapper(response);
+        this.contactsCount = Object.keys(this.contacts).length;
       }
     });
     
