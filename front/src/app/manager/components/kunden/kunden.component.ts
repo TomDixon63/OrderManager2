@@ -18,17 +18,15 @@ export class KundenComponent {
   @ViewChild('filter') filter!: ElementRef;
 
 
-
   constructor(private backendService: BackendService, private mappingService: Mappingservice) {
   }
 
   ngOnInit() {
-    
     this.getAllContacts();
     this.loading = false;
   }
 
-  // get all contacts and fill table data
+  // get all contacts with addresses, and fill table data
   public getAllContacts() {
     this.backendService.getAllContacts().subscribe((response) => {
       console.log(response);      
@@ -43,7 +41,6 @@ export class KundenComponent {
         this.contactsCount = Object.keys(this.contacts).length;
       }
     });
-    
   }
 
   /** table handling methods */

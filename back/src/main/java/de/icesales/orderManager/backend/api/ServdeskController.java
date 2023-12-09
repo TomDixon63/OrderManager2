@@ -38,4 +38,12 @@ public class ServdeskController {
 		return contacts;
 	}
 
+	@GetMapping("/ContactAddress")
+	public Mono<JsonNode> getAllContactAddresses() {
+		log.info("-> getAllContactAddresses() called");
+		Mono<JsonNode> contactAddresses = this.service.getAllContactAddress();
+		contactAddresses.subscribe(System.out::println);
+		return contactAddresses;
+	}
+
 }

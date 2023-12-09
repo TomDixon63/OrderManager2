@@ -21,17 +21,25 @@ public class SevdeskService {
 
 	private final static String SECURITY_TOKEN = "token=4bf578db00dbd24146a33a72f2ab8272";
 
+	private final static String EMBED_ADDRESSES = "embed=addresses";
+
+	private final static String limit = "limit";
+
+	private final static String limitValue = "1000";
+
 	private final static String CONTACT_ENPOINT = "/Contact";
 
 	private final static String CONTACT_ADDRESS_ENDPOINT = "/ContactAddress";
 
-	private final static String CUSTOMER_NUMBER = "customerNumber=";
+	// private final static String CUSTOMER_NUMBER = "customerNumber";
 
 	private final static String SLASH = "/";
 
 	private final static String AND_MARK = "&";
 
 	private final static String QUESTION_MARK = "?";
+
+	private final static String EQUALS_MARK = "=";
 
 	private final WebClient webClient;
 
@@ -42,32 +50,15 @@ public class SevdeskService {
 	}
 
 	/**
-	 * Get all Contact (kunden)
-	 * https://my.sevdesk.de/api/v1/Contact?token=4bf578db00dbd24146a33a72f2ab8272
+	 * Get all Contact (kunden) (max. 1000) with addresses
+	 * https://my.sevdesk.de/api/v1/Contact?embed=addresses&limit=1000&token=4bf578db00dbd24146a33a72f2ab8272
 	 * 
 	 * @return JsonNode all Contact
 	 */
 	public Mono<JsonNode> getAllContacts() {
 
-		String uri = BASE_URL.concat(CONTACT_ENPOINT).concat(QUESTION_MARK).concat(SECURITY_TOKEN);
-		log.info("getAllContacts() -> uri: " + uri);
-
-		return jsonNode(uri);
-
-	}
-
-	/**
-	 * Get all Contact (kunden)
-	 * https://my.sevdesk.de/api/v1/Contact?customerNumber=1090&token=4bf578db00dbd24146a33a72f2ab8272
-	 * 
-	 * @param customerNumber
-	 * 
-	 * @return JsonNode all Addresses for a Contact
-	 */
-	public Mono<JsonNode> getAllAressesForContact(String customerNumber) {
-
-		String uri = BASE_URL.concat(CONTACT_ENPOINT).concat(QUESTION_MARK).concat(customerNumber)
-				.concat(customerNumber).concat(AND_MARK).concat(SECURITY_TOKEN);
+		String uri = BASE_URL.concat(CONTACT_ENPOINT).concat(QUESTION_MARK).concat(EMBED_ADDRESSES).concat(AND_MARK)
+				.concat(limit).concat(EQUALS_MARK).concat(limitValue).concat(AND_MARK).concat(SECURITY_TOKEN);
 		log.info("getAllContacts() -> uri: " + uri);
 
 		return jsonNode(uri);

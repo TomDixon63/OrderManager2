@@ -1,9 +1,15 @@
 // Contact (Kunde)
 
+import { ContactAddress } from "./contactAddress";
+
 export class Contact {
    public id: string;
    public name: string;
    public customerNumber: string;
+   public address1: string;
+   public address2: string;
+   public additionalInformation: string;
+   public description: string;
 
    constructor() { }
 
