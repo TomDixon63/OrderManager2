@@ -3,6 +3,10 @@ import { Order } from 'src/app/model/order';
 import { BackendService } from '../../service/backend.service';
 import { Mappingservice } from '../../service/mapping.service';
 
+interface expandedRows {
+  [key: string]: boolean;
+}
+
 @Component({
   selector: 'app-bestellungen',
   templateUrl: './bestellungen.component.html',
@@ -10,10 +14,20 @@ import { Mappingservice } from '../../service/mapping.service';
 })
 export class BestellungenComponent implements OnInit {
 
-   // array of contacts from api service
+ current: Date = new Date(); //'Mar 11 2015' current.getTime() = 1426060964567
+ followingDay:Date = new Date(this.current.getTime() + 86400000); // + 1 day in ms
+
+
+  heute:Date = new Date();
+  morgen:Date =  new Date(this.heute.getTime() + 86400000); // + 1 day in ms
+  uebermorgen:Date = new Date(this.morgen.getTime() + 86400000); // + 1 day in ms
+
    orders: Order[] = [];
    orderCount = 0;
+
    loading: boolean = true;
+   expandedRows: expandedRows = {};
+   isExpanded: boolean = false;
   
  
    constructor(private backendService: BackendService, private mappingService: Mappingservice) {
@@ -25,7 +39,7 @@ export class BestellungenComponent implements OnInit {
    }
 
    public getAllOrder(){
-    this.backendService.getAllOrder().subscribe((response) => {
+    this.backendService.getAllOrder().subscribe((response: any) => {
       console.log(response);      
       const responseAsString: string = JSON.stringify(response);
       if (responseAsString.includes("Error")) {
@@ -40,4 +54,16 @@ export class BestellungenComponent implements OnInit {
     });
 
 }
+
+expandAll() {
+  if (!this.isExpanded) {
+      this.orders.forEach((order: { addressName: string | number; }) => order && order.addressName ? this.expandedRows[order.addressName] = true : '');
+
+  } else {
+      this.expandedRows = {};
+  }
+  this.isExpanded = !this.isExpanded;
+}
+
+
 }

@@ -10,7 +10,7 @@ export class AppTopBarComponent {
 
     items!: MenuItem[];
 
-    todayDate = new Date();
+    heute = new Date();
 
     @ViewChild('menubutton') menuButton!: ElementRef;
 
