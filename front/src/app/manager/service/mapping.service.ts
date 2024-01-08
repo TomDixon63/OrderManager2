@@ -67,13 +67,16 @@ export class Mappingservice {
       //console.log(temp_positions[index]);
       let temp_position = temp_positions[index];
       let position = new Position();
-      position.positionNumber = temp_position.positionNumber + 1; //starts with 0, so +1
+      position.id = temp_position.positionNumber;
+      position.positionNumber = +temp_position.positionNumber + 1; 
       position.name = temp_position.name;
       position.quantity = temp_position.quantity;
       position.text = temp_position.text;
       position.status = temp_position.status;
       positions.push(position);
     }
+    //console.log(positions);
+    order.positions = positions;
     return order;
   }
 
