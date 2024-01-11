@@ -4,12 +4,27 @@ import { BackendService } from './backend.service';
 import { Order } from 'src/app/model/order';
 import { Position } from 'src/app/model/position';
 
+
 @Injectable({
   providedIn: 'root'
 })
 export class Mappingservice {
 
   constructor(private backendService: BackendService) {
+  }
+
+  //--------------------------------------------------- Utility
+
+  // create a Date from a string
+  public string2Date(dateString: string) {
+    var dataSplit = dateString.split('.');
+    var day: number = Number(dataSplit[0]);
+    var month: number = Number(dataSplit[1]);
+    var year: number = Number(dataSplit[2]);
+
+    //new Date(year, monthIndex, day) monthIndex starts with 0, e.q. january = 0
+    var dateConverted: Date = new Date(year, month-1, day);
+    return dateConverted;
   }
 
   // ----------------------------------------------------------------  Contact mappings
@@ -37,27 +52,55 @@ export class Mappingservice {
 
   // ------------------------------------------------------------------- Order mappings  
 
+  //map response to Order
+  //only "Lieferschein"  (LI)
+  //only today and future dates
+  /*
   public response2OrderMapper(response: any) {
-    let orders: Order[] = [];
+    let lieferschein: string = "LI";
+    let today = new Date();
+    let ordersToday: Order[] = [];
+    let ordersAll: Order[] = [];
     for (const key in response.objects) {
       if (Object.prototype.hasOwnProperty.call(response.objects, key)) {
+
         let element = response.objects[key];
-        orders.push(this.mapElement2Order(element));
+        let orderType = element["orderType"];
+
+        if (orderType === lieferschein) {
+          let deliveryTerms: string = element["deliveryTerms"];
+          if (deliveryTerms === "" || deliveryTerms === null) {
+            //do nothing
+          } else {
+            console.log("deliveryTerms: " + deliveryTerms);
+            let deliveryDate: Date = this.string2Date(deliveryTerms);
+            console.log("deliveryDate: " + deliveryDate + "  today: " + today);
+
+          //  if (deliveryDate.getTime() >= today.getTime()){
+            if ((deliveryDate.getMonth() === today.getMonth()) && (deliveryDate.getDate() === today.getDate())){
+
+            ordersToday.push(this.mapElement2Order(element));
+            ordersAll.push(this.mapElement2Order(element));
+          }
+          }
+        }
       }
     }
 
     return orders;
-  }
+  }*/
 
   // map an (object) element to Order incl. Positions
-  private mapElement2Order(element: any) {
+  public mapElement2Order(element: any) {
+
     let order: Order = new Order();
+
     order.id = element["id"];
     order.orderNumber = element["orderNumber"];
     order.addressName = element["addressName"];
     order.deliveryTerms = element["deliveryTerms"];
     order.status = element["status"];
-    order.orderType = element["orderTypeorderType"];
+    order.orderType = element["orderType"];
 
     let positions: Position[] = [];
 
@@ -68,7 +111,7 @@ export class Mappingservice {
       let temp_position = temp_positions[index];
       let position = new Position();
       position.id = temp_position.positionNumber;
-      position.positionNumber = +temp_position.positionNumber + 1; 
+      position.positionNumber = +temp_position.positionNumber + 1;
       position.name = temp_position.name;
       position.quantity = temp_position.quantity;
       position.text = temp_position.text;
@@ -77,8 +120,11 @@ export class Mappingservice {
     }
     //console.log(positions);
     order.positions = positions;
+
     return order;
   }
+
+
 
 
 }

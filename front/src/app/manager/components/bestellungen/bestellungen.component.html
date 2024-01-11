@@ -8,14 +8,14 @@
                         <div class="card">
                             <p-toast></p-toast>
                             <p-table 
-                                    [value]="orders" 
+                                    [value]="ordersToday" 
                                     dataKey="id" 
                                     [loading]="loading" 
                                     [expandedRowKeys]="expandedRows" 
                                     responsiveLayout="scroll"
                                     [tableStyle]="{ 'min-width': '50rem' }">
                                 <ng-template pTemplate="caption">
-                                    <div class="line-height-3 font-large">{{orderCount}} Bestellungen</div>
+                                    <div class="line-height-3 font-large">{{ordersTodayCount}} Bestellungen</div>
                                 </ng-template>
                                 <ng-template pTemplate="header">
                                     <tr>
@@ -70,12 +70,15 @@
                                     </tr>
                                 </ng-template>
                                
-                                <ng-template pTemplate="rowexpansion" let-order>
+                                <ng-template pTemplate="rowexpansion" let-order >
                                     <th style="width: 3rem"></th>
                                     <tr>
                                         <td colspan="4">
                                             <div class="p-3">
-                                                <p-table [value]="order.positions" dataKey="id" responsiveLayout="scroll" styleClass="p-datatable-gridlines">
+                                                <p-table 
+                                                [value]="order.positions" 
+                                                dataKey="id" responsiveLayout="scroll" 
+                                                styleClass="p-datatable-gridlines">
                                                     <ng-template pTemplate="header">
                                                       
                                     <tr>
@@ -94,7 +97,7 @@
                                                 <span class="text-yellow-500 font-medium">Menge</span>
                                             </div>
                                         </th>
-                                        <th style="min-width: 5rem">
+                                        <th style="min-width: 25rem">
                                             <div class="flex justify-content-between align-items-center">
                                                 <span class="text-yellow-500 font-medium">Text</span>
                                             </div>
