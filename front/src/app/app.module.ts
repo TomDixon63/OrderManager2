@@ -8,7 +8,6 @@ import { NotfoundComponent } from './manager/components/notfound/notfound.compon
 import { Mappingservice } from './manager/service/mapping.service';
 import { BackendService } from './manager/service/backend.service';
 
-
 @NgModule({
     declarations: [
         AppComponent, NotfoundComponent

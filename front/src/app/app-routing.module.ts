@@ -11,6 +11,7 @@ import { AppLayoutComponent } from "./layout/app.layout.component";
                 children: [
                     { path: '', loadChildren: () => import('./manager/components/dashboard/dashboard.module').then(m => m.DashboardModule) },
                     { path: 'bestellungen', loadChildren: () => import('./manager/components/bestellungen/bestellungen.module').then(m => m.BestellungenModule) },
+                    { path: 'bestellungen-heute', loadChildren: () => import('./manager/components/bestellungen-heute/bestellungen-heute.module').then(m => m.BestellungenHeuteModule) },
                     { path: 'lagerbestand', loadChildren: () => import('./manager/components/lagerbestand/lagerbestand.module').then(m => m.LagerbestandModule) },
                 ]
             },
