@@ -1,6 +1,3 @@
-import { BackendService } from './../../service/backend.service';
-import { Mappingservice } from './../../service/mapping.service';
-
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Order } from 'src/app/model/order';
 import { BestellungenService } from './../../service/bestellungen.service';
@@ -10,14 +7,12 @@ interface expandedRows {
 }
 
 @Component({
-  selector: 'app-bestellungen-heute',
-  templateUrl: './bestellungen-heute.component.html',
-  styleUrls: ['./bestellungen-heute.component.scss']
+  selector: 'app-bestellungen-alle',
+  templateUrl: './bestellungen-alle.component.html',
+  styleUrls: ['./bestellungen-alle.component.scss']
 })
-export class BestellungenHeuteComponent implements OnInit, OnDestroy {
+export class BestellungenAlleComponent implements OnInit, OnDestroy {
 
-  heute: Date;
-  
   orders: Order[] = [];
   ordersCount = 0;
 
@@ -31,9 +26,8 @@ export class BestellungenHeuteComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.bestellungenService.getAllOrder();
-    this.orders = this.bestellungenService.ordersToday;
+    this.orders = this.bestellungenService.ordersAll;
     this.ordersCount = Object.keys(this.orders).length;
-    this.heute = this.bestellungenService.heute;
     this.loading = false;
   }
 
@@ -48,11 +42,7 @@ export class BestellungenHeuteComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.orders = [];
-    this.ordersCount = 0;
+
   }
 
-
 }
-
-

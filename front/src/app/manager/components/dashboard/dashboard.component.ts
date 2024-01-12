@@ -1,95 +1,37 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { MenuItem } from 'primeng/api';
-import { Subscription } from 'rxjs';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
+import { BestellungenService } from './../../service/bestellungen.service';
+import { Order } from 'src/app/model/order';
 
 @Component({
     templateUrl: './dashboard.component.html',
 })
 export class DashboardComponent implements OnInit, OnDestroy {
 
-    items!: MenuItem[];
+    heute: Date = new Date();
 
-   
+    ordersToday: Order[] = [];
+    ordersTodayCount = 0;
 
-    chartData: any;
+    ordersAll: Order[] = [];
+    ordersAllCount = 0;
 
-    chartOptions: any;
+    constructor(public layoutService: LayoutService, private bestellungenService: BestellungenService) {
 
-    subscription!: Subscription;
-
-    constructor( public layoutService: LayoutService) {
-        this.subscription = this.layoutService.configUpdate$.subscribe(() => {
-            this.initChart();
-        });
     }
 
     ngOnInit() {
-      
-    }
-
-    initChart() {
-        const documentStyle = getComputedStyle(document.documentElement);
-        const textColor = documentStyle.getPropertyValue('--text-color');
-        const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
-        const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
-
-        this.chartData = {
-            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-            datasets: [
-                {
-                    label: 'First Dataset',
-                    data: [65, 59, 80, 81, 56, 55, 40],
-                    fill: false,
-                    backgroundColor: documentStyle.getPropertyValue('--bluegray-700'),
-                    borderColor: documentStyle.getPropertyValue('--bluegray-700'),
-                    tension: .4
-                },
-                {
-                    label: 'Second Dataset',
-                    data: [28, 48, 40, 19, 86, 27, 90],
-                    fill: false,
-                    backgroundColor: documentStyle.getPropertyValue('--green-600'),
-                    borderColor: documentStyle.getPropertyValue('--green-600'),
-                    tension: .4
-                }
-            ]
-        };
-
-        this.chartOptions = {
-            plugins: {
-                legend: {
-                    labels: {
-                        color: textColor
-                    }
-                }
-            },
-            scales: {
-                x: {
-                    ticks: {
-                        color: textColorSecondary
-                    },
-                    grid: {
-                        color: surfaceBorder,
-                        drawBorder: false
-                    }
-                },
-                y: {
-                    ticks: {
-                        color: textColorSecondary
-                    },
-                    grid: {
-                        color: surfaceBorder,
-                        drawBorder: false
-                    }
-                }
-            }
-        };
+        this.bestellungenService.getAllOrder();
+        this.ordersToday = this.bestellungenService.ordersToday;
+        this.ordersTodayCount = Object.keys(this.ordersTodayCount).length;
+        this.ordersAll = this.bestellungenService.ordersAll;
+        this.ordersAllCount = Object.keys(this.ordersAll).length;
     }
 
     ngOnDestroy() {
-        if (this.subscription) {
-            this.subscription.unsubscribe();
-        }
+        this.ordersToday = [];
+        this.ordersTodayCount = 0;
+        this.ordersAll = [];
+        this.ordersAllCount = 0;
     }
 }

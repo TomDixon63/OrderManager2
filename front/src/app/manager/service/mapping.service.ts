@@ -10,21 +10,10 @@ import { Position } from 'src/app/model/position';
 })
 export class Mappingservice {
 
+  ordersToday: Order[] = [];
+  ordersAll: Order[] = [];
+
   constructor(private backendService: BackendService) {
-  }
-
-  //--------------------------------------------------- Utility
-
-  // create a Date from a string
-  public string2Date(dateString: string) {
-    var dataSplit = dateString.split('.');
-    var day: number = Number(dataSplit[0]);
-    var month: number = Number(dataSplit[1]);
-    var year: number = Number(dataSplit[2]);
-
-    //new Date(year, monthIndex, day) monthIndex starts with 0, e.q. january = 0
-    var dateConverted: Date = new Date(year, month-1, day);
-    return dateConverted;
   }
 
   // ----------------------------------------------------------------  Contact mappings
@@ -55,12 +44,14 @@ export class Mappingservice {
   //map response to Order
   //only "Lieferschein"  (LI)
   //only today and future dates
-  /*
+
   public response2OrderMapper(response: any) {
     let lieferschein: string = "LI";
     let today = new Date();
-    let ordersToday: Order[] = [];
-    let ordersAll: Order[] = [];
+
+    this.ordersToday = [];
+    this.ordersAll = [];
+
     for (const key in response.objects) {
       if (Object.prototype.hasOwnProperty.call(response.objects, key)) {
 
@@ -72,23 +63,25 @@ export class Mappingservice {
           if (deliveryTerms === "" || deliveryTerms === null) {
             //do nothing
           } else {
-            console.log("deliveryTerms: " + deliveryTerms);
+           // console.log("deliveryTerms: " + deliveryTerms);
             let deliveryDate: Date = this.string2Date(deliveryTerms);
             console.log("deliveryDate: " + deliveryDate + "  today: " + today);
 
-          //  if (deliveryDate.getTime() >= today.getTime()){
-            if ((deliveryDate.getMonth() === today.getMonth()) && (deliveryDate.getDate() === today.getDate())){
+            //all
+            if ((deliveryDate.getMonth() >= today.getMonth()) && (deliveryDate.getDate() >= today.getDate())) {
+              this.ordersAll.push(this.mapElement2Order(element));
+            }
 
-            ordersToday.push(this.mapElement2Order(element));
-            ordersAll.push(this.mapElement2Order(element));
-          }
+            //today
+            if ((deliveryDate.getMonth() === today.getMonth()) && (deliveryDate.getDate() === today.getDate())) {
+              this.ordersToday.push(this.mapElement2Order(element));
+
+            }
           }
         }
       }
     }
-
-    return orders;
-  }*/
+  }
 
   // map an (object) element to Order incl. Positions
   public mapElement2Order(element: any) {
@@ -124,7 +117,18 @@ export class Mappingservice {
     return order;
   }
 
+  //--------------------------------------------------- Utilities
 
+  // create a Date from a string
+  public string2Date(dateString: string) {
+    var dataSplit = dateString.split('.');
+    var day: number = Number(dataSplit[0]);
+    var month: number = Number(dataSplit[1]);
+    var year: number = Number(dataSplit[2]);
 
+    //new Date(year, monthIndex, day) monthIndex starts with 0, e.q. january = 0
+    var dateConverted: Date = new Date(year, month - 1, day);
+    return dateConverted;
+  }
 
 }
