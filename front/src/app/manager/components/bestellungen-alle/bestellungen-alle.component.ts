@@ -11,7 +11,7 @@ interface expandedRows {
   templateUrl: './bestellungen-alle.component.html',
   styleUrls: ['./bestellungen-alle.component.scss']
 })
-export class BestellungenAlleComponent implements OnInit, OnDestroy {
+export class BestellungenAlleComponent implements OnInit {
 
   orders: Order[] = [];
   ordersCount = 0;
@@ -24,7 +24,7 @@ export class BestellungenAlleComponent implements OnInit, OnDestroy {
   constructor(private bestellungenService: BestellungenService) {
   }
 
-  ngOnInit() {
+ ngOnInit() {
     this.bestellungenService.getAllOrder();
     this.orders = this.bestellungenService.ordersAll;
     this.ordersCount = Object.keys(this.orders).length;
@@ -41,8 +41,6 @@ export class BestellungenAlleComponent implements OnInit, OnDestroy {
     this.isExpanded = !this.isExpanded;
   }
 
-  ngOnDestroy() {
-
-  }
+  
 
 }

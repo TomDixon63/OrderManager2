@@ -7,6 +7,7 @@ export class Order {
     public id: string;
     public orderNumber: string;
     public addressName: string;
+    public address: string;
     public deliveryTerms: string; //Lieferdatum
     public status: string;
     public orderType: string; 

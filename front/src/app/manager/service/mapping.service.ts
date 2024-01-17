@@ -1,4 +1,8 @@
+
+
+import { UtilityService } from './utility.service';
 import { Injectable } from '@angular/core';
+import { Temporal } from '@js-temporal/polyfill';
 import { Contact } from 'src/app/model/contact';
 import { BackendService } from './backend.service';
 import { Order } from 'src/app/model/order';
@@ -9,11 +13,13 @@ import { Position } from 'src/app/model/position';
   providedIn: 'root'
 })
 export class Mappingservice {
-
   ordersToday: Order[] = [];
+  ordersTommorow: Order[] = [];
+  ordersAfterTommorow: Order[] = [];
   ordersAll: Order[] = [];
 
-  constructor(private backendService: BackendService) {
+  constructor(private backendService: BackendService, private utilityService: UtilityService) {
+   
   }
 
   // ----------------------------------------------------------------  Contact mappings
@@ -47,10 +53,15 @@ export class Mappingservice {
 
   public response2OrderMapper(response: any) {
     let lieferschein: string = "LI";
-    let today = new Date();
+    let today = Temporal.Now.plainDateISO();
+    let tommorow = today.add({ days: 1 });
+    let aftertommorow = today.add({ days: 2 });
 
     this.ordersToday = [];
+    this.ordersTommorow = [];
+    this.ordersAfterTommorow = []
     this.ordersAll = [];
+
 
     for (const key in response.objects) {
       if (Object.prototype.hasOwnProperty.call(response.objects, key)) {
@@ -64,19 +75,31 @@ export class Mappingservice {
             //do nothing
           } else {
            // console.log("deliveryTerms: " + deliveryTerms);
-            let deliveryDate: Date = this.string2Date(deliveryTerms);
-            console.log("deliveryDate: " + deliveryDate + "  today: " + today);
+            //let deliveryDate: Date = this.string2Date(deliveryTerms);
+            let deliveryDate = this.utilityService.string2Temporal(deliveryTerms);
+           // console.log("deliveryDate: " + deliveryDate.toString());
 
             //all
-            if ((deliveryDate.getMonth() >= today.getMonth()) && (deliveryDate.getDate() >= today.getDate())) {
+            if ((Temporal.PlainDate.compare(deliveryDate, today) == 0) || (Temporal.PlainDate.compare(deliveryDate, today) == 1)) {
               this.ordersAll.push(this.mapElement2Order(element));
             }
 
             //today
-            if ((deliveryDate.getMonth() === today.getMonth()) && (deliveryDate.getDate() === today.getDate())) {
+            if (Temporal.PlainDate.compare(deliveryDate, today) == 0) {
               this.ordersToday.push(this.mapElement2Order(element));
-
             }
+
+            //tommorow
+            if (Temporal.PlainDate.compare(deliveryDate, tommorow) == 0) {
+              this.ordersTommorow.push(this.mapElement2Order(element));
+            }
+
+            //aftertommorow
+            if (Temporal.PlainDate.compare(deliveryDate, aftertommorow) == 0) {
+              this.ordersAfterTommorow.push(this.mapElement2Order(element));
+            }
+
+
           }
         }
       }
@@ -90,6 +113,7 @@ export class Mappingservice {
 
     order.id = element["id"];
     order.orderNumber = element["orderNumber"];
+    order.address =  element["address"];
     order.addressName = element["addressName"];
     order.deliveryTerms = element["deliveryTerms"];
     order.status = element["status"];
@@ -115,20 +139,6 @@ export class Mappingservice {
     order.positions = positions;
 
     return order;
-  }
-
-  //--------------------------------------------------- Utilities
-
-  // create a Date from a string
-  public string2Date(dateString: string) {
-    var dataSplit = dateString.split('.');
-    var day: number = Number(dataSplit[0]);
-    var month: number = Number(dataSplit[1]);
-    var year: number = Number(dataSplit[2]);
-
-    //new Date(year, monthIndex, day) monthIndex starts with 0, e.q. january = 0
-    var dateConverted: Date = new Date(year, month - 1, day);
-    return dateConverted;
   }
 
 }

@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BackendService } from './backend.service';
 import { Mappingservice } from './mapping.service';
@@ -9,22 +8,15 @@ import { Order } from 'src/app/model/order';
 })
 export class BestellungenService {
 
-    //current: Date = new Date(); //'Mar 11 2015' current.getTime() = 1426060964567
-    //followingDay: Date = new Date(this.current.getTime() + 86400000); // + 1 day in ms
-
-    heute: Date = new Date();
-    morgen: Date = new Date(this.heute.getTime() + 86400000); // + 1 day in ms
-    uebermorgen: Date = new Date(this.morgen.getTime() + 86400000); // + 1 day in ms
-
     ordersToday: Order[] = [];
     ordersAll: Order[] = [];
-    
+
     constructor(private backendService: BackendService, private mappingService: Mappingservice) {
     }
 
     // gets all orders and organizes them to arrays: ordersToday, ordersAll ...
-    public getAllOrder() {
-        this.backendService.getAllOrder().subscribe((response: any) => {
+    public async getAllOrder() {
+        (await this.backendService.getAllOrder()).subscribe((response: any) => {
             console.log(response);
             const responseAsString: string = JSON.stringify(response);
             if (responseAsString.includes("Error")) {
@@ -40,6 +32,10 @@ export class BestellungenService {
             }
         });
 
+    }
+
+    public getOrdersToday() {
+        return this.ordersToday;
     }
 
 }

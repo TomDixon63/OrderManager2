@@ -46,7 +46,6 @@ export class BackendService {
      public getAllOrder(){
         let url: string = this.baseUrl.concat(this.order_endpoint_with_status_500_and_positions).concat(this.AMPERSAND).concat(this.securityToken);
         return this.http.get(url);
-       // return this.http.get("https://my.sevdesk.de/api/v1/Order?embed=positions&token=4bf578db00dbd24146a33a72f2ab8272");
      }
 
 
