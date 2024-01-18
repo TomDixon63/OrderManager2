@@ -23,13 +23,13 @@ export class BestellungenHeuteComponent implements OnInit, OnDestroy {
 
   //bags:
   w2BCount: number = 0;
-  
-  w5BCount: number = 0; 
+
+  w5BCount: number = 0;
   w15BCount: number = 0;
   //kg:
   wlCount: number = 0;
   wTotalCount: number = 0;
- 
+
   //bags:
   c2BCount: number = 0;
   c5BCount: number = 0;
@@ -45,15 +45,29 @@ export class BestellungenHeuteComponent implements OnInit, OnDestroy {
 
 
   constructor(private bestellungenService: BestellungenService, private calcService: CalcService) {
+
   }
 
-   ngOnInit() {
+  ngOnInit() {
+    console.log(" BestellungenHeuteComponent -> ngOnInit()");
+    this.initData();
+    this.loading = false;
+
+  }
+
+  initData() {
+    console.log(" BestellungenHeuteComponent -> initData()");
+
+    this.orders = [];
+    this.ordersCount = 0;
+
     //orders
     this.bestellungenService.getAllOrder;
     this.orders = this.bestellungenService.ordersToday;
     this.ordersCount = Object.keys(this.orders).length;
 
     //quantities
+
     this.calcService.getQuantityToday(this.orders);
 
     this.w2BCount = this.calcService.w2BCount.value();
@@ -68,14 +82,26 @@ export class BestellungenHeuteComponent implements OnInit, OnDestroy {
     this.clCount = this.calcService.clCount.value();
     this.cTotalCount = this.calcService.cTotalCount.value();
 
-    console.log('wTotalCount:' +this.wTotalCount);
-    
+    console.log('wTotalCount (kg):' + this.wTotalCount);
 
-
-    this.loading = false;
-    
   }
- 
+
+  resetData() {
+    console.log(" BestellungenHeuteComponent -> resetData()");
+    this.orders = [];
+    this.ordersCount = 0;
+    this.w2BCount = 0;
+    this.w5BCount = 0;
+    this.w15BCount = 0;
+    this.wlCount = 0;
+    this.wTotalCount = 0;
+    this.c2BCount = 0;
+    this.c5BCount = 0;
+    this.c15BCount = 0;
+    this.clCount = 0;
+    this.cTotalCount = 0;
+  }
+
 
   expandAll() {
     if (!this.isExpanded) {
@@ -88,8 +114,8 @@ export class BestellungenHeuteComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.orders = [];
-    this.ordersCount = 0;
+    console.log(" BestellungenHeuteComponent -> ngOnDestroy()");
+    this.resetData();
   }
 
 }

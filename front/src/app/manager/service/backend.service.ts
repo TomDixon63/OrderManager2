@@ -43,9 +43,21 @@ export class BackendService {
     */
      // get all Order with Positions and Status 200
      // https://my.sevdesk.de/api/v1/Order?status=200&embed=positions&token=4bf578db00dbd24146a33a72f2ab8272
-     public getAllOrder(){
+     public async getAllOrder(){
+        console.log(" BackendService ->getAllOrder()");
         let url: string = this.baseUrl.concat(this.order_endpoint_with_status_500_and_positions).concat(this.AMPERSAND).concat(this.securityToken);
         return this.http.get(url);
+        /*
+        let url: string = this.baseUrl.concat(this.order_endpoint_with_status_500_and_positions).concat(this.AMPERSAND).concat(this.securityToken);
+        try{
+           const response = await this.http.get(url);
+           return response;
+        }
+       catch(err){
+        console.log(" BackendService ->getAllOrder() -> Error:");
+        console.log(err);
+        
+       }*/
      }
 
 
