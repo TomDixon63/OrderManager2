@@ -16,21 +16,16 @@ export class AppMenuComponent implements OnInit {
         this.model = [
             {
                 items: [
-                    { label: 'Dashboard', icon: 'pi pi-fw pi-home', routerLink: ['/'] }
+                    { label: 'Startseite', icon: 'pi pi-fw pi-home', routerLink: ['/'] }
                 ]
             }, 
             {
                 items: [
-                    /*
                     {
-                        label: 'Bestellungen', icon: 'pi pi-fw pi-question', routerLink: ['/bestellungen']
-                    },
-                    */
-                    {
-                        label: 'Bestellungen heute', icon: 'pi pi-fw pi-question', routerLink: ['/bestellungen-heute']
+                        label: 'Bestellungen heute', icon: 'pi pi-fw pi-chevron-right', routerLink: ['/bestellungen-heute']
                     },
                     {
-                        label: 'Bestellungen alle', icon: 'pi pi-fw pi-question', routerLink: ['/bestellungen-alle']
+                        label: 'Bestellungen alle',  icon: 'pi pi-fw pi-chevron-right', routerLink: ['/bestellungen-alle']
                     }
                    
                 ]
@@ -38,7 +33,7 @@ export class AppMenuComponent implements OnInit {
             {
                 items: [
                     {
-                        label: 'Lagerbestand', icon: 'pi pi-fw pi-question', routerLink: ['/lagerbestand']
+                        label: 'Lagerbestand', icon: 'pi pi-fw pi-bars', routerLink: ['/lagerbestand']
                     }
                    
                 ]

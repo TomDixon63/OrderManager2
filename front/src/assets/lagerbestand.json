@@ -1,32 +1,52 @@
-[  
+{
+  "objects": [ 
   {  
-    "id": 1,  
-    "name": "Luca",  
-    "email": "luca@gmail.com",  
-    "gender": "male"  
+    "id": "1", 
+    "type": "W2B", 
+    "text": "2-Kg-Beutel-Würfeleis",  
+    "value": 12 
   },  
   {  
-    "id": 2,  
-    "name": "Lilly",  
-    "email": "lilly@gmail.com",  
-    "gender": "female"  
+    "id": "2", 
+    "type": "W5B", 
+    "text": "5-Kg-Beutel-Würfeleis",  
+    "value": 33 
   },  
   {  
-    "id": 3,  
-    "name": "Anna",  
-    "email": "anna@gmail.com",  
-    "gender": "female"  
+    "id": "3", 
+    "type": "W15B", 
+    "text": "15-Kg-Beutel-Würfeleis",  
+    "value": 19 
   },  
   {  
-    "id": 4,  
-    "name": "John",  
-    "email": "john@gmail.com",  
-    "gender": "male"  
+    "id": "4", 
+    "type": "WL", 
+    "text": "Würfeleis",  
+    "value": 122 
   },  
   {  
-    "id": 5,  
-    "name": "Mary",  
-    "email": "mary@gmail.com",  
-    "gender": "female"  
-  }  
-]  
+    "id": "5", 
+    "type": "C2B", 
+    "text": "2-Kg-Beutel-Crushed-Eis",  
+    "value": 11
+  },  
+  {  
+    "id": "6", 
+    "type": "C5B", 
+    "text": "5-Kg-Beutel-Crushed-Eis",  
+    "value": 11
+  },  
+   {  
+    "id": "7", 
+    "type": "C15B", 
+    "text": "15-Kg-Beutel-Crushed-Eis",  
+    "value":0
+  },
+  {  
+    "id": "8", 
+    "type": "CL", 
+    "text": "Crushed-Eis",  
+    "value": 99
+  }
+]
+}

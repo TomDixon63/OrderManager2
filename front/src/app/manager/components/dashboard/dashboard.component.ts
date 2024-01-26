@@ -1,3 +1,4 @@
+import { BackendService } from './../../service/backend.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { BestellungenService } from './../../service/bestellungen.service';
 import { Order } from 'src/app/model/order';
@@ -22,47 +23,34 @@ export class DashboardComponent implements OnInit {
 
 
 
-    constructor(private bestellungenService: BestellungenService) {
-
+    constructor(private bestellungenService: BestellungenService, private backendService: BackendService) {
     }
+
 
     ngOnInit() {
-        this.getOrders().then(console.log);
+        console.log(" DashboardComponent -> ngOnInit()");
+      // unbdingt hier, sonst funktioniert heute und alle nicht!
+       // this.bestellungenService.getAllOrder();
+       this.getOrders();
     }
 
-    async getOrders(this: any) {
+
+
+    async getOrders() {
+        console.log(" DashboardComponent -> getOrders()");
         try {
             const response = await this.bestellungenService.getAllOrder();
-            console.log('1');
             console.log(response);
-            console.log('2');
+
+            this.ordersToday = await this.bestellungenService.ordersToday;
+            this.ordersTodayCount = Object.keys(this.ordersTodayCount).length;
+
+            this.ordersAll = await this.bestellungenService.ordersAll;
+            this.ordersAllCount = Object.keys(this.ordersAll).length;
 
         } catch (err) {
             console.log(err);
             return;
         }
     }
-
-    /*
-    getOrders = async() => {
-        try {
-            await this.bestellungenService.getAllOrder();
-            this.ordersToday = await this.bestellungenService.ordersToday;
-            this.ordersTodayCount = Object.keys(this.ordersTodayCount).length;
-
-            this.ordersAll = await this.bestellungenService.ordersAll;
-            this.ordersAllCount = Object.keys(this.ordersAll).length;
-            return;
-        }catch(err){
-            console.log(err);
-            return;
-        }
-
-    }
-    */
-
-
-
-
-
 }

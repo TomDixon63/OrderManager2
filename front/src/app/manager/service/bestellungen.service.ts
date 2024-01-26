@@ -16,8 +16,8 @@ export class BestellungenService {
 
     // gets all orders and organizes them to arrays: ordersToday, ordersAll ...
     public async getAllOrder() {
-        console.log(" BestellungenService -> getAllOrder()");
-         (await this.backendService.getAllOrder()).subscribe((response: any) => {
+        //  console.log(" BestellungenService -> getAllOrder()");
+        this.backendService.getAllOrder().subscribe((response: any) => {
             console.log(response);
             const responseAsString: string = JSON.stringify(response);
             if (responseAsString.includes("Error")) {
@@ -25,6 +25,7 @@ export class BestellungenService {
                 //this.alertService.warn(responseAsString);
                 console.log("getAllOrder() -> Error ");
             } else {
+                console.log(responseAsString);
                 this.mappingService.response2OrderMapper(response);
                 this.ordersToday = [];
                 this.ordersAll = [];
@@ -34,12 +35,7 @@ export class BestellungenService {
         });
     }
 
-    public getOrdersToday() {
-        return this.ordersToday;
-    }
-
 }
 
-function subscribe(arg0: (response: any) => void) {
-    throw new Error('Function not implemented.');
-}
+
+

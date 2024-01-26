@@ -4,7 +4,6 @@ import { UtilityService } from './utility.service';
 import { Injectable } from '@angular/core';
 import { Temporal } from '@js-temporal/polyfill';
 import { Contact } from 'src/app/model/contact';
-import { BackendService } from './backend.service';
 import { Order } from 'src/app/model/order';
 import { Position } from 'src/app/model/position';
 
@@ -18,7 +17,7 @@ export class Mappingservice {
   ordersAfterTommorow: Order[] = [];
   ordersAll: Order[] = [];
 
-  constructor(private backendService: BackendService, private utilityService: UtilityService) {
+  constructor(private utilityService: UtilityService) {
    
   }
 
@@ -52,7 +51,11 @@ export class Mappingservice {
   //only today and future dates
 
   public response2OrderMapper(response: any) {
+    console.log(" Mappingservice -> response2OrderMapper()");
+    console.log(response);
+
     let lieferschein: string = "LI";
+    let auftragsbestaetigung = "AB";
     let today = Temporal.Now.plainDateISO();
     let tommorow = today.add({ days: 1 });
     let aftertommorow = today.add({ days: 2 });
@@ -62,6 +65,7 @@ export class Mappingservice {
     this.ordersAfterTommorow = []
     this.ordersAll = [];
 
+    
 
     for (const key in response.objects) {
       if (Object.prototype.hasOwnProperty.call(response.objects, key)) {
@@ -69,7 +73,8 @@ export class Mappingservice {
         let element = response.objects[key];
         let orderType = element["orderType"];
 
-        if (orderType === lieferschein) {
+        if (orderType == lieferschein ) {
+        
           let deliveryTerms: string = element["deliveryTerms"];
           if (deliveryTerms === "" || deliveryTerms === null) {
             //do nothing

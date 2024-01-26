@@ -32,7 +32,7 @@ export class BackendService {
         return this.http.get(url);
     }
 
-    
+
     /* Order status	Meaning	Status code
     Draft	The order is still a draft. It has not been sent to the end-customer and can still be changed.	100
     Delivered	The order has been sent to the end-customer. 200
@@ -41,24 +41,25 @@ export class BackendService {
     Partially Calculated	An invoice for parts of the order (but not the full order) has been created. 750
     Calculated	The order has been calculated. One or more invoices have been created covering the whole order.	1000
     */
-     // get all Order with Positions and Status 200
-     // https://my.sevdesk.de/api/v1/Order?status=200&embed=positions&token=4bf578db00dbd24146a33a72f2ab8272
-     public async getAllOrder(){
-        console.log(" BackendService ->getAllOrder()");
+    // get all Order with Positions and Status 200
+    // https://my.sevdesk.de/api/v1/Order?status=200&embed=positions&token=4bf578db00dbd24146a33a72f2ab8272
+    public getAllOrder() {
+      //  console.log(" BackendService ->getAllOrder()");
         let url: string = this.baseUrl.concat(this.order_endpoint_with_status_500_and_positions).concat(this.AMPERSAND).concat(this.securityToken);
         return this.http.get(url);
         /*
         let url: string = this.baseUrl.concat(this.order_endpoint_with_status_500_and_positions).concat(this.AMPERSAND).concat(this.securityToken);
         try{
-           const response = await this.http.get(url);
+           const response = this.http.get(url);
+           console.log(response);
            return response;
         }
        catch(err){
         console.log(" BackendService ->getAllOrder() -> Error:");
         console.log(err);
-        
+        return;
        }*/
-     }
+    }
 
 
 }

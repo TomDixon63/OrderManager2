@@ -52,7 +52,6 @@ export class BestellungenHeuteComponent implements OnInit, OnDestroy {
     console.log(" BestellungenHeuteComponent -> ngOnInit()");
     this.initData();
     this.loading = false;
-
   }
 
   initData() {
@@ -65,6 +64,8 @@ export class BestellungenHeuteComponent implements OnInit, OnDestroy {
     this.bestellungenService.getAllOrder;
     this.orders = this.bestellungenService.ordersToday;
     this.ordersCount = Object.keys(this.orders).length;
+    console.log(" BestellungenHeuteComponent -> Orders today:");
+    console.log(this.orders);
 
     //quantities
 
@@ -113,10 +114,12 @@ export class BestellungenHeuteComponent implements OnInit, OnDestroy {
     this.isExpanded = !this.isExpanded;
   }
 
+ 
   ngOnDestroy() {
     console.log(" BestellungenHeuteComponent -> ngOnDestroy()");
     this.resetData();
   }
+ 
 
 }
 

@@ -1,1 +1,90 @@
-<p>lagerbestand works!</p>
+
+<div class="grid">
+    <div class="col-12 md:col-10">
+            <p-toolbar>
+                <div class="p-toolbar-group-left flex flex-wrap">
+                    <button pButton type="button" label="Speichern" icon="pi pi-check"
+                        class="p-button-success mr-2" ></button>
+                </div>
+            </p-toolbar>
+    </div>
+</div>
+
+<div class="grid">
+    <div class="col-12 md:col-10">
+        <div class="card p-fluid">
+            <h3>Würfeleis</h3>
+            <div class="field grid">
+                <label class="col-12 mb-02 md:col-2 md:mb-0">2-Kg-Beutel-Würfeleis</label>
+                <div class="col-12 md:col-3">
+                    <p-inputNumber [(ngModel)]="w2BCount" [allowEmpty]="false" [showButtons]="true" [maxlength]="6" [maxFractionDigits]="0"
+                        [min]="0">
+                    </p-inputNumber>
+                </div>
+            </div>
+            <div class="field grid">
+                <label class="col-12 mb-2 md:col-2 md:mb-0">5-Kg-Beutel-Würfeleis</label>
+                <div class="col-12 md:col-3">
+                    <p-inputNumber [(ngModel)]="w5BCount" [allowEmpty]="false" [showButtons]="true" [maxlength]="6" [maxFractionDigits]="0"
+                        [min]="0">
+                    </p-inputNumber>
+                </div>
+            </div>
+            <div class="field grid">
+                <label class="col-12 mb-2 md:col-2 md:mb-0">15-Kg-Beutel-Würfeleis</label>
+                <div class="col-12 md:col-3">
+                    <p-inputNumber [(ngModel)]="w15BCount" [allowEmpty]="false" [showButtons]="true" [maxlength]="6" [maxFractionDigits]="0"
+                        [min]="0">
+                    </p-inputNumber>
+                </div>
+            </div>
+            <div class="field grid">
+                <label class="col-12 mb-2 md:col-2 md:mb-0">Würfeleis (Kg)</label>
+                <div class="col-12 md:col-3">
+                    <p-inputNumber [(ngModel)]="wlCount" [allowEmpty]="false" [showButtons]="true" [maxlength]="6" [maxFractionDigits]="0"
+                        [min]="0">
+                    </p-inputNumber>
+                </div>
+            </div>
+        </div>
+
+        <div class="card p-fluid">
+            <h3>Crushedeis</h3>
+            <div class="field grid">
+                <label class="col-12 mb-2 md:col-2 md:mb-0">2-Kg-Beutel-Crushed-Eis</label>
+                <div class="col-12 md:col-3">
+                    <p-inputNumber [(ngModel)]="c2BCount" [allowEmpty]="false" [showButtons]="true" [maxlength]="6" [maxFractionDigits]="0"
+                        [min]="0">
+                    </p-inputNumber>
+                </div>
+            </div>
+            <div class="field grid">
+                <label class="col-12 mb-2 md:col-2 md:mb-0">5-Kg-Beutel-Crushed-Eis</label>
+                <div class="col-12 md:col-3">
+                    <p-inputNumber [(ngModel)]="c5BCount" [allowEmpty]="false" [showButtons]="true" [maxlength]="6" [maxFractionDigits]="0"
+                        [min]="0">
+                    </p-inputNumber>
+                </div>
+            </div>
+            <div class="field grid">
+                <label class="col-12 mb-2 md:col-2 md:mb-0">15-Kg-Beutel-Crushed-Eis</label>
+                <div class="col-12 md:col-3">
+                    <p-inputNumber [(ngModel)]="c15BCount" [allowEmpty]="false" [showButtons]="true" [maxlength]="6" [maxFractionDigits]="0"
+                        [min]="0">
+                    </p-inputNumber>
+                </div>
+            </div>
+            <div class="field grid">
+                <label class="col-12 mb-2 md:col-2 md:mb-0">Crushed-Eis (Kg)</label>
+                <div class="col-12 md:col-3">
+                    <p-inputNumber [(ngModel)]="clCount" [allowEmpty]="false" [showButtons]="true" [maxlength]="6" [maxFractionDigits]="0"
+                        [min]="0">
+                    </p-inputNumber>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+</div>
