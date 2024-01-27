@@ -1,6 +1,6 @@
-import { LagerBestandService } from './../../service/lagerbestand.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { BackendService } from '../../service/backend.service';
 
 
 @Component({
@@ -10,7 +10,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class LagerbestandComponent implements OnInit {
 
-  
+
   //bags:
   w2BCount: number = 0;
   w5BCount: number = 0;
@@ -25,18 +25,19 @@ export class LagerbestandComponent implements OnInit {
   //kg:
   clCount: number = 0;
 
-  
 
-  constructor(private lagerbestandService: LagerBestandService, private http: HttpClient) {
-    
-  }
+
+  constructor(private backendService: BackendService, private http: HttpClient) { }
 
   ngOnInit() {
     console.log("LagerbestandComponent ->  ngOnInit()");
-    this.readFile();
+    //this.readFile();
+    //this.backendService.getBestand;
+    this.getBestand();
   }
 
 
+  /*
   readFile() {
     console.log("LagerbestandComponent ->  readFile()");
 
@@ -45,6 +46,19 @@ export class LagerbestandComponent implements OnInit {
       console.log(response);
       this.mapResponse(response);
     });
+  }
+  */
+
+  getBestand() {
+    console.log("LagerbestandComponent ->  getBestand()");
+    let url: string = 'http://localhost:5000/getbestand';
+
+    this.http.get<any>(url).subscribe(data => {
+      console.log(data);
+      this.mapResponse(data);
+    });
+    
+
   }
 
 
@@ -87,4 +101,4 @@ export class LagerbestandComponent implements OnInit {
 
   }
 
- }
+}
