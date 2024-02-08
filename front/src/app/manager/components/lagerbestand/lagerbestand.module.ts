@@ -3,11 +3,13 @@ import { CommonModule } from '@angular/common';
 import { InputNumberModule } from "primeng/inputnumber";
 import { ToolbarModule } from 'primeng/toolbar';
 import { ButtonModule } from 'primeng/button';
+import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 
 import { LagerbestandRoutingModule } from './lagerbestand-routing.module';
 import { LagerbestandComponent } from './lagerbestand.component';
-import { FormsModule } from '@angular/forms';
 
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 @NgModule({
   declarations: [
@@ -19,7 +21,9 @@ import { FormsModule } from '@angular/forms';
     InputNumberModule,
     ToolbarModule,
     ButtonModule,
+    ReactiveFormsModule,
     FormsModule
-  ]
+  ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class LagerbestandModule { }

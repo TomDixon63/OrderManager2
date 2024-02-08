@@ -5,6 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppLayoutModule } from './layout/app.layout.module';
 import { NotfoundComponent } from './manager/components/notfound/notfound.component';
 import { HttpClientModule } from '@angular/common/http';
+import {ReactiveFormsModule} from "@angular/forms";
 
 import { Mappingservice } from './manager/service/mapping.service';
 import { BackendService } from './manager/service/backend.service';
@@ -17,7 +18,8 @@ import { BackendService } from './manager/service/backend.service';
     imports: [
         AppRoutingModule,
         AppLayoutModule,
-        HttpClientModule
+        HttpClientModule,
+        ReactiveFormsModule
     ],
     providers: [
         { provide: LocationStrategy, useClass: HashLocationStrategy },

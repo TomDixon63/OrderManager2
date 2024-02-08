@@ -14,9 +14,23 @@ export class UtilityService {
 
     constructor() {
         this.today= Temporal.Now.plainDateTimeISO();
-        this.todayString = this.todayString;
         this.tommorow =  this.today.add({ days: 1 });
     }
+
+    // formatDateFromTemporalString('2024-02-08T16:49:28.394168352') ; -> 02.08.2024 16:49
+    formatDateFromTemporalString(temporalString) {
+      var d = new Date(temporalString),
+          month = '' + (d.getMonth() + 1),
+          day = '' + d.getDate(),
+          year = d.getFullYear();
+          const hour = d.getHours();
+          const minutes = d.getMinutes();
+  
+      if (month.length < 2) month = '0' + month;
+      if (day.length < 2) day = '0' + day;
+      return [day, month, year].join('.') + ' ' + hour + ':' + minutes;
+  }
+ 
 
     // create a Date from a string
   public string2Temporal(dateString: string) {

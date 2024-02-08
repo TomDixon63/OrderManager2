@@ -1,6 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BackendService } from '../../service/backend.service';
+import { FormControl, FormGroup } from '@angular/forms';
+import { Temporal } from '@js-temporal/polyfill';
+import { UtilityService } from '../../service/utility.service';
 
 
 @Component({
@@ -9,96 +11,108 @@ import { BackendService } from '../../service/backend.service';
   styleUrls: ['./lagerbestand.component.scss']
 })
 export class LagerbestandComponent implements OnInit {
+ 
+  last_update: string;
+
+  form = new FormGroup({
+    "w2BCount": new FormControl("",),
+    "w5BCount": new FormControl("",),
+    "w15BCount": new FormControl("",),
+    "wlCount": new FormControl("",),
+    "c2BCount": new FormControl("",),
+    "c5BCount": new FormControl("",),
+    "c15BCount": new FormControl("",),
+    "clCount": new FormControl("",),
+    "lastupdate": new FormControl("",),
+  });
 
 
-  //bags:
-  w2BCount: number = 0;
-  w5BCount: number = 0;
-  w15BCount: number = 0;
-  //kg:
-  wlCount: number = 0;
-
-  //bags:
-  c2BCount: number = 0;
-  c5BCount: number = 0;
-  c15BCount: number = 0;
-  //kg:
-  clCount: number = 0;
-
-
-
-  constructor(private backendService: BackendService, private http: HttpClient) { }
+  constructor(private http: HttpClient, private utilityService: UtilityService) { }
 
   ngOnInit() {
     console.log("LagerbestandComponent ->  ngOnInit()");
-    //this.readFile();
-    //this.backendService.getBestand;
     this.getBestand();
+   // console.log(this.form);
+   
   }
 
-
-  /*
-  readFile() {
-    console.log("LagerbestandComponent ->  readFile()");
-
-    const url: string = '/assets/lagerbestand.json';
-    this.http.get(url).subscribe((response: any) => {
-      console.log(response);
-      this.mapResponse(response);
-    });
+  save() {
+    console.log("LagerbestandComponent ->  save()");
+    this.writeBestand();
+   // console.log(this.form);
   }
-  */
 
   getBestand() {
     console.log("LagerbestandComponent ->  getBestand()");
     let url: string = 'http://localhost:5000/getbestand';
-
     this.http.get<any>(url).subscribe(data => {
       console.log(data);
-      this.mapResponse(data);
+      this.mapResponseGet(data);
+     // this.form.value = data;
     });
-    
+  }
 
+  writeBestand() {
+    console.log("LagerbestandComponent ->  writeBestand()");
+   // console.log(JSON.stringify(this.form.value));
+   // console.log(this.form.controls['w2BCount'].value);
+
+    let url: string = 'http://localhost:5000/postbestand';
+
+    //change datetime last_update and this.form.lastupdate
+    let now = Temporal.Now.plainDateTimeISO();
+    let dateTime = this.utilityService.formatDateFromTemporalString(now.toLocaleString());
+   
+    this.form.patchValue({ lastupdate:  dateTime });
+    this.last_update = dateTime;
+   
+    this.http.post<any>(url, this.form.value).subscribe(data => {
+      console.log(data);
+    });
+   
   }
 
 
-  private mapResponse(response: any) {
-
-    for (const key in response.objects) {
-      if (Object.prototype.hasOwnProperty.call(response.objects, key)) {
-        let element = response.objects[key];
-
-        switch (element["id"]) {
-          case '1':
-            this.w2BCount = element["value"];
-            break;
-          case '2':
-            this.w5BCount = element["value"];
-            break;
-          case '3':
-            this.w15BCount = element["value"];
-            break;
-          case '4':
-            this.wlCount = element["value"];
-            break;
-          case '5':
-            this.c2BCount = element["value"];
-            break;
-          case '6':
-            this.c5BCount = element["value"];
-            break;
-          case '7':
-            this.c15BCount = element["value"];
-            break;
-          case '8':
-            this.clCount = element["value"];
-            break;
-          default:
-            break;
+  private mapResponseGet(response: any) {
+    console.log("LagerbestandComponent ->  mapResponseGet()");
+    for (const key in response) {
+      if (Object.prototype.hasOwnProperty.call(response, key)) {
+        let value = response[key];
+        if(key === 'w2BCount') {
+         this.form.controls["w2BCount"].setValue(value);
         }
+        if(key === 'w5BCount') {
+          this.form.controls["w5BCount"].setValue(value);
+         }
+         if(key === 'w15BCount') {
+          this.form.controls["w15BCount"].setValue(value);
+         }
+         if(key === 'wlCount') {
+          this.form.controls["wlCount"].setValue(value);
+         }
+         if(key === 'c2BCount') {
+          this.form.controls["c2BCount"].setValue(value);
+         }
+         if(key === 'c5BCount') {
+          this.form.controls["c5BCount"].setValue(value);
+         }
+         if(key === 'c15BCount') {
+          this.form.controls["c15BCount"].setValue(value);
+         }
+         if(key === 'clCount') {
+          this.form.controls["clCount"].setValue(value);
+         }
+         if(key === 'lastupdate') {
+          this.form.controls["lastupdate"].setValue(value);
+         }
       }
+      this.last_update =  this.form.controls["lastupdate"].value;
     }
-
   }
+
+  resetForm() {
+    this.form.reset();
+  }
+
 
 }
