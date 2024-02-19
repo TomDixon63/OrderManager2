@@ -18,7 +18,7 @@ export class Mappingservice {
   ordersAll: Order[] = [];
 
   constructor(private utilityService: UtilityService) {
-   
+
   }
 
   // ----------------------------------------------------------------  Contact mappings
@@ -46,71 +46,6 @@ export class Mappingservice {
 
   // ------------------------------------------------------------------- Order mappings  
 
-  //map response to Order
-  //only "Lieferschein"  (LI)
-  //only today and future dates
-
-  public response2OrderMapper(response: any) {
-    console.log(" Mappingservice -> response2OrderMapper()");
-    console.log(response);
-
-    let lieferschein: string = "LI";
-    let auftragsbestaetigung = "AB";
-    let today = Temporal.Now.plainDateISO();
-    let tommorow = today.add({ days: 1 });
-    let aftertommorow = today.add({ days: 2 });
-
-    this.ordersToday = [];
-    this.ordersTommorow = [];
-    this.ordersAfterTommorow = []
-    this.ordersAll = [];
-
-    
-
-    for (const key in response.objects) {
-      if (Object.prototype.hasOwnProperty.call(response.objects, key)) {
-
-        let element = response.objects[key];
-        let orderType = element["orderType"];
-
-        if (orderType == lieferschein ) {
-        
-          let deliveryTerms: string = element["deliveryTerms"];
-          if (deliveryTerms === "" || deliveryTerms === null) {
-            //do nothing
-          } else {
-           // console.log("deliveryTerms: " + deliveryTerms);
-            //let deliveryDate: Date = this.string2Date(deliveryTerms);
-            let deliveryDate = this.utilityService.string2Temporal(deliveryTerms);
-           // console.log("deliveryDate: " + deliveryDate.toString());
-
-            //all
-            if ((Temporal.PlainDate.compare(deliveryDate, today) == 0) || (Temporal.PlainDate.compare(deliveryDate, today) == 1)) {
-              this.ordersAll.push(this.mapElement2Order(element));
-            }
-
-            //today
-            if (Temporal.PlainDate.compare(deliveryDate, today) == 0) {
-              this.ordersToday.push(this.mapElement2Order(element));
-            }
-
-            //tommorow
-            if (Temporal.PlainDate.compare(deliveryDate, tommorow) == 0) {
-              this.ordersTommorow.push(this.mapElement2Order(element));
-            }
-
-            //aftertommorow
-            if (Temporal.PlainDate.compare(deliveryDate, aftertommorow) == 0) {
-              this.ordersAfterTommorow.push(this.mapElement2Order(element));
-            }
-
-
-          }
-        }
-      }
-    }
-  }
-
   // map an (object) element to Order incl. Positions
   public mapElement2Order(element: any) {
 
@@ -118,7 +53,7 @@ export class Mappingservice {
 
     order.id = element["id"];
     order.orderNumber = element["orderNumber"];
-    order.address =  element["address"];
+    order.address = element["address"];
     order.addressName = element["addressName"];
     order.deliveryTerms = element["deliveryTerms"];
     order.status = element["status"];
@@ -146,4 +81,116 @@ export class Mappingservice {
     return order;
   }
 
+
+
+  //map response to Order
+  //only "Lieferschein"  (LI)
+  //only today and future dates
+  //order date format is 2024-02-13T21:35:23+01:00 
+
+  public response2OrderMapper(response: any) {
+    console.log(" Mappingservice -> response2OrderMapper()");
+    console.log(response);
+
+    let lieferschein: string = "LI";
+    let auftragsbestaetigung = "AB";
+
+    this.ordersToday = [];
+    this.ordersTommorow = [];
+    this.ordersAfterTommorow = []
+    this.ordersAll = [];
+
+    let today: Date = this.utilityService.today;
+    let tommorow: Date = this.utilityService.tommorow;
+    let aftertommorow: Date = this.utilityService.aftertommorow;
+
+    for (const key in response.objects) {
+      if (Object.prototype.hasOwnProperty.call(response.objects, key)) {
+        let element = response.objects[key];
+        let orderType = element["orderType"];
+        let deliveryTerms: string = element["deliveryTerms"];
+        let addressName = element["addressName"];
+        //console.log(deliveryTerms);
+
+        let deliveryTermsDate: Date = this.utilityService.convertStringToDate(deliveryTerms);
+        // console.log(deliveryTermsDate);
+
+        if (deliveryTermsDate.getDate() === today.getDate()) {
+          if (orderType == lieferschein) {
+            this.ordersToday.push(this.mapElement2Order(element));
+            this.ordersAll.push(this.mapElement2Order(element));
+          }
+
+        }
+
+        if (deliveryTermsDate.getDate() === tommorow.getDate()) {
+          if (orderType == lieferschein) {
+            this.ordersTommorow.push(this.mapElement2Order(element));
+            this.ordersAll.push(this.mapElement2Order(element));
+          }
+        }
+
+        if (deliveryTermsDate.getDate() === aftertommorow.getDate()) {
+          if (orderType == lieferschein) {
+           this.ordersAfterTommorow.push(this.mapElement2Order(element));
+            this.ordersAll.push(this.mapElement2Order(element));
+          }
+        }
+/*
+        if (deliveryTermsDate.getDate() > aftertommorow.getDate()) {
+          this.ordersAll.push(this.mapElement2Order(element));
+        }
+        */
+      }
+
+    }
+
+
+
+    /*
+        for (const key in response.objects) {
+          if (Object.prototype.hasOwnProperty.call(response.objects, key)) {
+    
+            let element = response.objects[key];
+            let orderType = element["orderType"];
+    
+            if (orderType == lieferschein ) {
+            
+              let deliveryTerms: string = element["deliveryTerms"];
+              if (deliveryTerms === "" || deliveryTerms === null) {
+                //do nothing
+              } else {
+               // console.log("deliveryTerms: " + deliveryTerms);
+                //let deliveryDate: Date = this.string2Date(deliveryTerms);
+                let deliveryDate = this.utilityService.string2Temporal(deliveryTerms);
+               // console.log("deliveryDate: " + deliveryDate.toString());
+    
+                //all
+                if ((Temporal.PlainDate.compare(deliveryDate, today) == 0) || (Temporal.PlainDate.compare(deliveryDate, today) == 1)) {
+                  this.ordersAll.push(this.mapElement2Order(element));
+                }
+    
+                //today
+                if (Temporal.PlainDate.compare(deliveryDate, today) == 0) {
+                  this.ordersToday.push(this.mapElement2Order(element));
+                }
+    
+                //tommorow
+                if (Temporal.PlainDate.compare(deliveryDate, tommorow) == 0) {
+                  this.ordersTommorow.push(this.mapElement2Order(element));
+                }
+    
+                //aftertommorow
+                if (Temporal.PlainDate.compare(deliveryDate, aftertommorow) == 0) {
+                  this.ordersAfterTommorow.push(this.mapElement2Order(element));
+                }
+    
+    
+              }
+            }
+          }
+        }
+      }
+    */
+  }
 }

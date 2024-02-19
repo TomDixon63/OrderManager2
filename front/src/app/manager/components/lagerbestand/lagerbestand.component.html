@@ -1,13 +1,16 @@
 <form [formGroup]="form">
+
     <div class="grid">
         <div class="col-12 md:col-10">
+            <p-messages [value]="msgs"></p-messages>
             <p-toolbar>
                 <div class="p-toolbar-group-left flex flex-wrap">
-                    <button pButton type="button" label="Speichern" icon="pi pi-check"
-                        class="p-button-success mr-2" (click)="save()"></button>
+                    <button pButton type="button" label="Speichern" icon="pi pi-check" class="p-button-success mr-2"
+                        (click)="save()"></button>
                 </div>
                 <div class="p-toolbar-group-right flex flex-wrap">
-                    <span class="block text-orange-500 font-medium mb-3">Letzte Speicherung: <span class="text-green-500 font-medium mb-3"> {{last_update}}</span></span>
+                    <span class="block text-orange-500 font-medium mb-3">Letzte Speicherung: <span
+                            class="text-green-500 font-medium mb-3"> {{last_update}}</span></span>
                 </div>
             </p-toolbar>
         </div>

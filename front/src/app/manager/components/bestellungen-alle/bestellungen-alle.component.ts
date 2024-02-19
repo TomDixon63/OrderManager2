@@ -58,7 +58,7 @@ export class BestellungenAlleComponent implements OnInit, OnDestroy {
 
     //orders
     this.bestellungenService.getAllOrder;
-    this.orders = this.bestellungenService.ordersToday;
+    this.orders = this.bestellungenService.ordersAll;
     this.ordersCount = Object.keys(this.orders).length;
 
     //quantities
