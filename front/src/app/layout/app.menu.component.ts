@@ -25,6 +25,9 @@ export class AppMenuComponent implements OnInit {
                         label: 'Bestellungen heute', icon: 'pi pi-fw pi-chevron-right', routerLink: ['/bestellungen-heute']
                     },
                     {
+                        label: 'Bestellungen morgen', icon: 'pi pi-fw pi-chevron-right', routerLink: ['/bestellungen-morgen']
+                    },
+                    {
                         label: 'Bestellungen alle',  icon: 'pi pi-fw pi-chevron-right', routerLink: ['/bestellungen-alle']
                     }
                    

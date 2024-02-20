@@ -31,6 +31,7 @@ export class DashboardComponent implements OnInit {
     aftertommorow: string;
 
     constructor(private bestellungenService: BestellungenService, private backendService: BackendService, private utilityService: UtilityService) {
+     
     }
 
 
@@ -40,14 +41,12 @@ export class DashboardComponent implements OnInit {
         this.today = this.utilityService.todayString;
         this.tommorow = this.utilityService.tommorowString;
         this.aftertommorow = this.utilityService.aftertommorowString;
-        // console.log(this.today)
-        // console.log(this.tommorow)
-        // console.log(this.aftertommorow) 
-
-
         this.getOrders();
-        // unbdingt hier, sonst funktioniert heute und alle nicht!
-        this.bestellungenService.getAllOrder();
+       
+        // unbedingt hier, sonst funktioniert heute und alle nicht!
+        //this.bestellungenService.getAllOrder();
+      
+       
 
     }
 
@@ -57,11 +56,14 @@ export class DashboardComponent implements OnInit {
             const response = await this.bestellungenService.getAllOrder();
             console.log(response);
 
-            this.ordersToday = await this.bestellungenService.ordersToday;
+            this.ordersToday = this.bestellungenService.ordersToday;
             this.ordersTodayCount = Object.keys(this.ordersTodayCount).length;
 
-            this.ordersAll = await this.bestellungenService.ordersAll;
+            this.ordersAll = this.bestellungenService.ordersAll;
             this.ordersAllCount = Object.keys(this.ordersAll).length;
+
+            console.log( this.ordersToday.toString);
+            console.log( this.ordersAll.toString);
 
         } catch (err) {
             console.log(err);

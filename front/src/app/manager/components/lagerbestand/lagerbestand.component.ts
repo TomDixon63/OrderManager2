@@ -11,6 +11,7 @@ import { Message, MessageService } from 'primeng/api';
   styleUrls: ['./lagerbestand.component.scss'],
   providers: [MessageService]
 })
+
 export class LagerbestandComponent implements OnInit {
 
   last_update: string = '';

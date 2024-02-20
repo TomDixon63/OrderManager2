@@ -2,12 +2,14 @@ import { Injectable } from '@angular/core';
 import { ProductsEnum } from '../../model/enums';
 import { Position } from 'src/app/model/position';
 import { Order } from 'src/app/model/order';
+import { HttpClient } from '@angular/common/http';
+
 
 @Injectable({
     providedIn: 'root'
 })
 export class CalcService {
-
+  
     number = require('numeral');
 
     /*
@@ -37,9 +39,17 @@ export class CalcService {
     //kg:
     clCount = this.number(0);
     cTotalCount = this.number(0);
+ 
+    constructor(private http: HttpClient) { }
+
+public getBestandMinusToday(ordersToday: Order[]){
+    console.log(" CalcService -> getBestandMinusToday");
+    console.log(ordersToday);
+
+}
 
 
-    public getQuantityToday(orders: Order[]) {
+    public getQuantity(orders: Order[]) {
         console.log(" CalcService -> getQuantityToday()");
         this.resetData();
 
@@ -138,5 +148,54 @@ export class CalcService {
         this.cTotalCount = this.number(0);
 
     }
-
+/*
+    getBestand() {
+        console.log("LagerbestandComponent ->  getBestand()");
+        let url: string = 'http://localhost:5000/getbestand';
+        this.http.get<any>(url).subscribe(data => {
+          console.log(data);
+          this.mapBestandResponse(data);
+          // this.form.value = data;
+        });
+      }
+    
+        
+    
+      private mapBestandResponse(response: any) {
+        console.log("LagerbestandComponent ->  mapResponseGet()");
+        for (const key in response) {
+          if (Object.prototype.hasOwnProperty.call(response, key)) {
+            let value = response[key];
+            if (key === 'w2BCount') {
+              this.form.controls["w2BCount"].setValue(value);
+            }
+            if (key === 'w5BCount') {
+              this.form.controls["w5BCount"].setValue(value);
+            }
+            if (key === 'w15BCount') {
+              this.form.controls["w15BCount"].setValue(value);
+            }
+            if (key === 'wlCount') {
+              this.form.controls["wlCount"].setValue(value);
+            }
+            if (key === 'c2BCount') {
+              this.form.controls["c2BCount"].setValue(value);
+            }
+            if (key === 'c5BCount') {
+              this.form.controls["c5BCount"].setValue(value);
+            }
+            if (key === 'c15BCount') {
+              this.form.controls["c15BCount"].setValue(value);
+            }
+            if (key === 'clCount') {
+              this.form.controls["clCount"].setValue(value);
+            }
+            if (key === 'lastupdate') {
+              this.form.controls["lastupdate"].setValue(value);
+            }
+          }
+          this.last_update = this.form.controls["lastupdate"].value;
+        }
+      }
+*/
 }

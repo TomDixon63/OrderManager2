@@ -1,18 +1,23 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { CalcService } from './../../service/calc.service';
 import { Order } from 'src/app/model/order';
 import { BestellungenService } from './../../service/bestellungen.service';
-import { CalcService } from '../../service/calc.service';
+
+
 
 interface expandedRows {
   [key: string]: boolean;
 }
 
 @Component({
-  selector: 'app-bestellungen-alle',
-  templateUrl: './bestellungen-alle.component.html',
-  styleUrls: ['./bestellungen-alle.component.scss']
+  selector: 'app-bestellungen-morgen',
+  templateUrl: './bestellungen-morgen.component.html',
+  styleUrls: ['./bestellungen-morgen.component.scss']
 })
-export class BestellungenAlleComponent implements OnInit, OnDestroy {
+export class BestellungenMorgenComponent implements OnInit {
+
+  today: Date;
+  tommorow: Date;
 
   orders: Order[] = [];
   ordersCount = 0;
@@ -35,34 +40,36 @@ export class BestellungenAlleComponent implements OnInit, OnDestroy {
   clCount: number = 0;
   cTotalCount: number = 0;
 
-
   loading: boolean = true;
   expandedRows: expandedRows = {};
   isExpanded: boolean = false;
 
-
   constructor(private bestellungenService: BestellungenService, private calcService: CalcService) {
-  }
+    console.log("BestellungenMorgenComponent ->  constructor()");
+    this.today = new Date();
+    this.tommorow = new Date(this.today.getTime() + 86400000); // + 1 day in ms
+   }
 
-  ngOnInit() {
-    console.log(" BestellungenAlleComponent -> ngOnInit()");
+   ngOnInit() {
+    console.log(" BestellungenMorgenComponent -> ngOnInit()");
     this.initData();
     this.loading = false;
   }
 
   initData() {
-    console.log(" BestellungenAlleComponent -> initData()");
+    console.log(" BestellungenMorgenComponent -> initData()");
 
     this.orders = [];
     this.ordersCount = 0;
 
     //orders
     this.bestellungenService.getAllOrder;
-    this.orders = this.bestellungenService.ordersAll;
+    this.orders = this.bestellungenService.ordersTommorow;
     this.ordersCount = Object.keys(this.orders).length;
+    console.log(" BestellungenMorgenComponent -> Orders tomorrow:");
+    console.log(this.orders);
 
     //quantities
-
     this.calcService.getQuantity(this.orders);
 
     this.w2BCount = this.calcService.w2BCount.value();
@@ -82,7 +89,7 @@ export class BestellungenAlleComponent implements OnInit, OnDestroy {
   }
 
   resetData() {
-    console.log(" BestellungenAlleComponent -> resetData()");
+    console.log(" BestellungenMorgenComponent -> resetData()");
     this.orders = [];
     this.ordersCount = 0;
     this.w2BCount = 0;
@@ -97,10 +104,6 @@ export class BestellungenAlleComponent implements OnInit, OnDestroy {
     this.cTotalCount = 0;
   }
 
-  ngOnDestroy() {
-    console.log(" BestellungenAlleComponent -> ngOnDestroy()");
-    this.resetData();
-  }
 
   expandAll() {
     if (!this.isExpanded) {
@@ -111,7 +114,5 @@ export class BestellungenAlleComponent implements OnInit, OnDestroy {
     }
     this.isExpanded = !this.isExpanded;
   }
-
-
 
 }

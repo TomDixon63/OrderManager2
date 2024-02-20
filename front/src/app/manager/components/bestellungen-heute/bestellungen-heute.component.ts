@@ -1,5 +1,4 @@
 import { CalcService } from './../../service/calc.service';
-
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Order } from 'src/app/model/order';
 import { BestellungenService } from './../../service/bestellungen.service';
@@ -69,7 +68,7 @@ export class BestellungenHeuteComponent implements OnInit, OnDestroy {
 
     //quantities
 
-    this.calcService.getQuantityToday(this.orders);
+    this.calcService.getQuantity(this.orders);
 
     this.w2BCount = this.calcService.w2BCount.value();
     this.w5BCount = this.calcService.w5BCount.value();
