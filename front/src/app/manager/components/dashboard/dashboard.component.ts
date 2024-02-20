@@ -2,8 +2,9 @@ import { BackendService } from './../../service/backend.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { BestellungenService } from './../../service/bestellungen.service';
 import { Order } from 'src/app/model/order';
-import { catchError } from 'rxjs';
 import { UtilityService } from '../../service/utility.service';
+import { environment } from 'src/environments/environment';
+
 
 
 @Component({
@@ -31,7 +32,9 @@ export class DashboardComponent implements OnInit {
     aftertommorow: string;
 
     constructor(private bestellungenService: BestellungenService, private backendService: BackendService, private utilityService: UtilityService) {
-     
+        console.log("DashboardComponent -> constructor()");
+        console.log(environment.production); // Logs false for development environment
+        console.log(environment.nodeserverget);
     }
 
 

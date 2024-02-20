@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { FormControl, FormGroup } from '@angular/forms';
 import { UtilityService } from '../../service/utility.service';
 import { Message, MessageService } from 'primeng/api';
+import { environment } from 'src/environments/environment';
 
 
 @Component({
@@ -51,8 +52,8 @@ export class LagerbestandComponent implements OnInit {
 
   getBestand() {
     console.log("LagerbestandComponent ->  getBestand()");
-    let url: string = 'http://localhost:5000/getbestand';
-    this.http.get<any>(url).subscribe(data => {
+  //  let url: string = 'http://localhost:5000/getbestand';
+    this.http.get<any>(environment.nodeserverget).subscribe(data => {
       console.log(data);
       this.mapResponseGet(data);
       // this.form.value = data;
@@ -64,10 +65,9 @@ export class LagerbestandComponent implements OnInit {
     // console.log(JSON.stringify(this.form.value));
     // console.log(this.form.controls['w2BCount'].value);
 
-    let url: string = 'http://localhost:5000/postbestand';
+   // let url: string = 'http://localhost:5000/postbestand';
 
     //change datetime last_update and this.form.lastupdate
-    
     let dateTime = this.utilityService.todayString;
 
     this.form.patchValue({ lastupdate: dateTime });
@@ -78,7 +78,7 @@ export class LagerbestandComponent implements OnInit {
    // console.log('form lastupdate: ' + this.form.controls["lastupdate"].value);
 
 
-    this.http.post<any>(url, this.form.value).subscribe(data => {
+    this.http.post<any>(environment.nodeserverpost, this.form.value).subscribe(data => {
       console.log(data);
     });
 
