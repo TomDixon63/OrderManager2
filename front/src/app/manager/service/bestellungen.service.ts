@@ -28,7 +28,7 @@ export class BestellungenService {
                 //this.alertService.warn(responseAsString);
                 console.log("getAllOrder() -> Error ");
             } else {
-            //    console.log(responseAsString);
+                console.log(responseAsString);
                 this.mappingService.response2OrderMapper(response);
                 
                 this.ordersToday = [];

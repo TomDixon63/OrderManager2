@@ -90,7 +90,7 @@ export class Mappingservice {
 
   public response2OrderMapper(response: any) {
     console.log(" Mappingservice -> response2OrderMapper()");
-    console.log(response);
+   // console.log(response);
 
     let lieferschein: string = "LI";
     let auftragsbestaetigung = "AB";
@@ -113,9 +113,16 @@ export class Mappingservice {
         //console.log(deliveryTerms);
 
         let deliveryTermsDate: Date = this.utilityService.convertStringToDate(deliveryTerms);
-        // console.log(deliveryTermsDate);
-
-        if (deliveryTermsDate.getDate() === today.getDate()) {
+       /*
+        console.log('------------------');
+        console.log(deliveryTermsDate);
+        console.log(today);
+        console.log(tommorow);
+        console.log(aftertommorow);
+        console.log('------------------');
+*/
+        
+        if (deliveryTermsDate === today) {
           if (orderType == lieferschein) {
             this.ordersToday.push(this.mapElement2Order(element));
             this.ordersAll.push(this.mapElement2Order(element));
@@ -123,74 +130,27 @@ export class Mappingservice {
 
         }
 
-        if (deliveryTermsDate.getDate() === tommorow.getDate()) {
+        if (deliveryTermsDate === tommorow) {
           if (orderType == lieferschein) {
             this.ordersTommorow.push(this.mapElement2Order(element));
             this.ordersAll.push(this.mapElement2Order(element));
           }
         }
 
-        if (deliveryTermsDate.getDate() === aftertommorow.getDate()) {
+        if (deliveryTermsDate === aftertommorow) {
           if (orderType == lieferschein) {
            this.ordersAfterTommorow.push(this.mapElement2Order(element));
             this.ordersAll.push(this.mapElement2Order(element));
           }
         }
-/*
-        if (deliveryTermsDate.getDate() > aftertommorow.getDate()) {
-          this.ordersAll.push(this.mapElement2Order(element));
+
+        if (deliveryTermsDate > aftertommorow) {
+          this.ordersAll.push(this.mapElement2Order(element)); //LI und AB
         }
-        */
+      
       }
 
     }
 
-
-
-    /*
-        for (const key in response.objects) {
-          if (Object.prototype.hasOwnProperty.call(response.objects, key)) {
-    
-            let element = response.objects[key];
-            let orderType = element["orderType"];
-    
-            if (orderType == lieferschein ) {
-            
-              let deliveryTerms: string = element["deliveryTerms"];
-              if (deliveryTerms === "" || deliveryTerms === null) {
-                //do nothing
-              } else {
-               // console.log("deliveryTerms: " + deliveryTerms);
-                //let deliveryDate: Date = this.string2Date(deliveryTerms);
-                let deliveryDate = this.utilityService.string2Temporal(deliveryTerms);
-               // console.log("deliveryDate: " + deliveryDate.toString());
-    
-                //all
-                if ((Temporal.PlainDate.compare(deliveryDate, today) == 0) || (Temporal.PlainDate.compare(deliveryDate, today) == 1)) {
-                  this.ordersAll.push(this.mapElement2Order(element));
-                }
-    
-                //today
-                if (Temporal.PlainDate.compare(deliveryDate, today) == 0) {
-                  this.ordersToday.push(this.mapElement2Order(element));
-                }
-    
-                //tommorow
-                if (Temporal.PlainDate.compare(deliveryDate, tommorow) == 0) {
-                  this.ordersTommorow.push(this.mapElement2Order(element));
-                }
-    
-                //aftertommorow
-                if (Temporal.PlainDate.compare(deliveryDate, aftertommorow) == 0) {
-                  this.ordersAfterTommorow.push(this.mapElement2Order(element));
-                }
-    
-    
-              }
-            }
-          }
-        }
-      }
-    */
   }
 }
