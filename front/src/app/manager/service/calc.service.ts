@@ -2,200 +2,136 @@ import { Injectable } from '@angular/core';
 import { ProductsEnum } from '../../model/enums';
 import { Position } from 'src/app/model/position';
 import { Order } from 'src/app/model/order';
-import { HttpClient } from '@angular/common/http';
-
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root'
 })
 export class CalcService {
-  
-    number = require('numeral');
 
-    /*
-    W2B = '2-Kg-Beutel-Würfeleis',
-    W5B = '5-Kg-Beutel-Würfeleis',
-    W15B = '15-Kg-Beutel-Würfeleis',
-    WL = 'Würfeleis',
-    C2B = "2-Kg-Beutel-Crushed-Eis",
-    C5B = '5-Kg-Beutel-Crushed-Eis',
-    C15B = '15-Kg-Beutel-Crushed-Eis',
-    CL = 'Crushed-Eis'
-    */
+  number = require('numeral');
 
-    //bags:
-    w2BCount = this.number(0);
-    w5BCount = this.number(0);
-    w15BCount = this.number(0);
-    //kg:
-    wlCount = this.number(0);
-    wTotalCount = this.number(0);
+  //bags:
+  w2BCount = this.number(0);
+  w5BCount = this.number(0);
+  w15BCount = this.number(0);
+  //kg:
+  wlCount = this.number(0);
+  wTotalCount = this.number(0);
 
-    //bags:
-    c2BCount = this.number(0);
-    c5BCount = this.number(0);
-    c15BCount = this.number(0);
+  //bags:
+  c2BCount = this.number(0);
+  c5BCount = this.number(0);
+  c15BCount = this.number(0);
 
-    //kg:
-    clCount = this.number(0);
-    cTotalCount = this.number(0);
- 
-    constructor(private http: HttpClient) { }
+  //kg:
+  clCount = this.number(0);
+  cTotalCount = this.number(0);
 
-public getBestandMinusToday(ordersToday: Order[]){
+  constructor() { }
+
+  public getBestandMinusToday(ordersToday: Order[]) {
     console.log(" CalcService -> getBestandMinusToday");
-    console.log(ordersToday);
+   console.log(ordersToday);
 
-}
+  }
 
 
-    public getQuantity(orders: Order[]) {
-        console.log(" CalcService -> getQuantityToday()");
-        this.resetData();
+  public getQuantity(orders: Order[]) {
+    console.log(" CalcService -> getQuantity()");
+    this.resetData();
 
-        if (orders.length == 0) return;
+    if (orders.length == 0) return;
 
-        let positions: Position[] = [];
+    let positions: Position[] = [];
 
-        // Order Positions -> positions
-        for (var i in orders) {
-            let order: Order = orders[i];
-            let orderpositions: Position[] = order.positions;
+    // Order Positions -> positions
+    for (var i in orders) {
+      let order: Order = orders[i];
+      let orderpositions: Position[] = order.positions;
 
-            for (var k in orderpositions) {
-                let orderposition: Position = orderpositions[k];
-                positions.push(orderposition);
-            }
-        }
-
-        console.log(positions);
-
-        // Calculation
-        for (var index in positions) {
-
-            let p: Position;
-
-            p = positions[index];
-
-            let name: string = p.name;
-
-            if (name === ProductsEnum.W2B) {
-                this.w2BCount = this.w2BCount.add(p.quantity);
-                let q = p.quantity * 2;
-                this.wTotalCount = this.wTotalCount.add(q);
-            }
-
-            if (name === ProductsEnum.W5B) {
-                this.w5BCount = this.w5BCount.add(p.quantity);
-                let q = p.quantity * 5;
-                this.wTotalCount = this.wTotalCount.add(q);
-            }
-
-            if (name === ProductsEnum.W15B) {
-                this.w15BCount = this.w15BCount.add(p.quantity);
-                let q = p.quantity * 15;
-                this.wTotalCount = this.wTotalCount.add(q);
-            }
-
-            if (name === ProductsEnum.WL) {
-                this.wlCount = this.wlCount.add(p.quantity);
-                this.wTotalCount = this.wTotalCount.add(p.quantity);
-            }
-
-            if (name === ProductsEnum.C2B) {
-                this.c2BCount = this.c2BCount.add(p.quantity);
-                let q = p.quantity * 2;
-                this.cTotalCount = this.cTotalCount.add(q);
-            }
-
-            if (name === ProductsEnum.C5B) {
-                this.c5BCount = this.c5BCount.add(p.quantity);
-                let q = p.quantity * 5;
-                this.cTotalCount = this.cTotalCount.add(q);
-            }
-
-            if (name === ProductsEnum.C15B) {
-                this.c15BCount = this.c15BCount.add(p.quantity);
-                let q = p.quantity * 15;
-                this.cTotalCount = this.cTotalCount.add(q);
-            }
-
-            if (name === ProductsEnum.CL) {
-                this.clCount = this.clCount.add(p.quantity);
-                this.cTotalCount = this.cTotalCount.add(p.quantity);
-            }
-           
-
-        }
+      for (var k in orderpositions) {
+        let orderposition: Position = orderpositions[k];
+        positions.push(orderposition);
+      }
     }
 
-    resetData(){
-        console.log(" CalcService -> resetData()");
-        this.w2BCount = this.number(0);
-        this.w5BCount = this.number(0);
-        this.w15BCount = this.number(0);
-        //kg:
-        this.wlCount = this.number(0);
-        this.wTotalCount = this.number(0);
-    
-        //bags:
-        this.c2BCount = this.number(0);
-        this.c5BCount = this.number(0);
-        this.c15BCount = this.number(0);
-    
-        //kg:
-        this.clCount = this.number(0);
-        this.cTotalCount = this.number(0);
+   // console.log(positions);
 
+    // Calculation
+    for (var index in positions) {
+
+      let p: Position;
+
+      p = positions[index];
+
+      let name: string = p.name;
+
+      if (name === ProductsEnum.W2B) {
+        this.w2BCount = this.w2BCount.add(p.quantity);
+        let q = p.quantity * 2;
+        this.wTotalCount = this.wTotalCount.add(q);
+      }
+
+      if (name === ProductsEnum.W5B) {
+        this.w5BCount = this.w5BCount.add(p.quantity);
+        let q = p.quantity * 5;
+        this.wTotalCount = this.wTotalCount.add(q);
+      }
+
+      if (name === ProductsEnum.W15B) {
+        this.w15BCount = this.w15BCount.add(p.quantity);
+        let q = p.quantity * 15;
+        this.wTotalCount = this.wTotalCount.add(q);
+      }
+
+      if (name === ProductsEnum.WL) {
+        this.wlCount = this.wlCount.add(p.quantity);
+        this.wTotalCount = this.wTotalCount.add(p.quantity);
+      }
+
+      if (name === ProductsEnum.C2B) {
+        this.c2BCount = this.c2BCount.add(p.quantity);
+        let q = p.quantity * 2;
+        this.cTotalCount = this.cTotalCount.add(q);
+      }
+
+      if (name === ProductsEnum.C5B) {
+        this.c5BCount = this.c5BCount.add(p.quantity);
+        let q = p.quantity * 5;
+        this.cTotalCount = this.cTotalCount.add(q);
+      }
+
+      if (name === ProductsEnum.C15B) {
+        this.c15BCount = this.c15BCount.add(p.quantity);
+        let q = p.quantity * 15;
+        this.cTotalCount = this.cTotalCount.add(q);
+      }
+
+      if (name === ProductsEnum.CL) {
+        this.clCount = this.clCount.add(p.quantity);
+        this.cTotalCount = this.cTotalCount.add(p.quantity);
+      }
     }
-/*
-    getBestand() {
-        console.log("LagerbestandComponent ->  getBestand()");
-        let url: string = 'http://localhost:5000/getbestand';
-        this.http.get<any>(url).subscribe(data => {
-          console.log(data);
-          this.mapBestandResponse(data);
-          // this.form.value = data;
-        });
-      }
-    
-        
-    
-      private mapBestandResponse(response: any) {
-        console.log("LagerbestandComponent ->  mapResponseGet()");
-        for (const key in response) {
-          if (Object.prototype.hasOwnProperty.call(response, key)) {
-            let value = response[key];
-            if (key === 'w2BCount') {
-              this.form.controls["w2BCount"].setValue(value);
-            }
-            if (key === 'w5BCount') {
-              this.form.controls["w5BCount"].setValue(value);
-            }
-            if (key === 'w15BCount') {
-              this.form.controls["w15BCount"].setValue(value);
-            }
-            if (key === 'wlCount') {
-              this.form.controls["wlCount"].setValue(value);
-            }
-            if (key === 'c2BCount') {
-              this.form.controls["c2BCount"].setValue(value);
-            }
-            if (key === 'c5BCount') {
-              this.form.controls["c5BCount"].setValue(value);
-            }
-            if (key === 'c15BCount') {
-              this.form.controls["c15BCount"].setValue(value);
-            }
-            if (key === 'clCount') {
-              this.form.controls["clCount"].setValue(value);
-            }
-            if (key === 'lastupdate') {
-              this.form.controls["lastupdate"].setValue(value);
-            }
-          }
-          this.last_update = this.form.controls["lastupdate"].value;
-        }
-      }
-*/
+  }
+
+  resetData() {
+    console.log(" CalcService -> resetData()");
+    this.w2BCount = this.number(0);
+    this.w5BCount = this.number(0);
+    this.w15BCount = this.number(0);
+    //kg:
+    this.wlCount = this.number(0);
+    this.wTotalCount = this.number(0);
+
+    //bags:
+    this.c2BCount = this.number(0);
+    this.c5BCount = this.number(0);
+    this.c15BCount = this.number(0);
+
+    //kg:
+    this.clCount = this.number(0);
+    this.cTotalCount = this.number(0);
+
+  }
+
 }

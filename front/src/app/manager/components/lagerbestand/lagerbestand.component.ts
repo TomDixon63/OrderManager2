@@ -132,6 +132,4 @@ export class LagerbestandComponent implements OnInit {
     this.form.reset();
   }
 
-  
-
 }

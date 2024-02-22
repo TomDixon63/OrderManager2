@@ -21,14 +21,14 @@ export class BestellungenService {
     public async getAllOrder() {
        console.log(" BestellungenService -> getAllOrder()");
        this.backendService.getAllOrder().subscribe((response: any) => {
-            console.log(response);
+       //     console.log(response);
             const responseAsString: string = JSON.stringify(response);
             if (responseAsString.includes("Error")) {
                 //todo alert implementieren
                 //this.alertService.warn(responseAsString);
                 console.log("getAllOrder() -> Error ");
             } else {
-                console.log(responseAsString);
+            //    console.log(responseAsString);
                 this.mappingService.response2OrderMapper(response);
                 
                 this.ordersToday = [];

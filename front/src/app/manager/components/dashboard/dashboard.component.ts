@@ -4,7 +4,13 @@ import { BestellungenService } from './../../service/bestellungen.service';
 import { Order } from 'src/app/model/order';
 import { UtilityService } from '../../service/utility.service';
 import { environment } from 'src/environments/environment';
+import { HttpClient } from '@angular/common/http';
+import { ProductsEnum } from 'src/app/model/enums';
+import { Bestand } from 'src/app/model/bestand';
 
+interface expandedRows {
+    [key: string]: boolean;
+}
 
 
 @Component({
@@ -12,44 +18,110 @@ import { environment } from 'src/environments/environment';
 })
 export class DashboardComponent implements OnInit {
 
-    /*
-    today: Date = new Date();
-    tommorow: Date = new Date(this.today.getTime() + 86400000); // + 1 day in ms
-    aftertommorow: Date = new Date(this.today.getTime() + 86400000 + 86400000); // + 2 day in ms
-*/
-    ordersToday: Order[] = [];
-    ordersTodayCount = 0;
-
-    ordersAll: Order[] = [];
-    ordersAllCount = 0;
-
-
-    w2B: number[] = [300, 33, -20, -44];
-
-
     today: string;
     tommorow: string;
     aftertommorow: string;
 
-    constructor(private bestellungenService: BestellungenService, private backendService: BackendService, private utilityService: UtilityService) {
+    ordersToday: Order[] = [];
+    ordersTodayCount = 0;
+
+    ordersTommorow: Order[] = [];
+    ordersTommorowCount = 0;
+
+    ordersAfterTommorow: Order[] = [];
+    ordersAfterTommorowCount = 0;
+
+    ordersAll: Order[] = [];
+    ordersAllCount = 0;
+
+    loading: boolean = true;
+    expandedRows: expandedRows = {};
+    isExpanded: boolean = false;
+
+    bestandList: Bestand[] = [];
+
+
+    constructor(private bestellungenService: BestellungenService, private utilityService: UtilityService, private http: HttpClient) {
         console.log("DashboardComponent -> constructor()");
-        console.log(environment.production); // Logs false for development environment
-        console.log(environment.nodeserverget);
+        this.today = this.utilityService.todayString;
+        this.tommorow = this.utilityService.tommorowString;
+        this.aftertommorow = this.utilityService.aftertommorowString;
     }
 
 
     ngOnInit() {
         console.log(" DashboardComponent -> ngOnInit()");
+        this.loading = false;
 
-        this.today = this.utilityService.todayString;
-        this.tommorow = this.utilityService.tommorowString;
-        this.aftertommorow = this.utilityService.aftertommorowString;
         this.getOrders();
        
-        // unbedingt hier, sonst funktioniert heute und alle nicht!
-        //this.bestellungenService.getAllOrder();
-      
-       
+        this.getLagerBestand();
+
+
+
+    }
+
+     getLagerBestand() {
+        console.log("DashboardComponent ->  getBestand()");
+        this.http.get<any>(environment.nodeserverget).subscribe(data => {
+            console.log(data);
+            this.mapResponseLagerBestand(data);
+        });
+    }
+
+
+    private getBestaende(){
+
+
+
+
+    }
+    private mapResponseLagerBestand(response: any) {
+        console.log("DashboardComponent ->  mapResponseGetBestand()");
+        for (const key in response) {
+
+            if (Object.prototype.hasOwnProperty.call(response, key)) {
+                let b: Bestand = new Bestand();
+                // let value = response[key];
+                b.lager = response[key];
+                if (key === 'w2BCount') {
+                    b.description = ProductsEnum.W2B.valueOf();
+                    this.bestandList.push(b);
+                }
+
+                if (key === 'w5BCount') {
+                    b.description = ProductsEnum.W5B.valueOf();
+                    this.bestandList.push(b);
+                }
+                if (key === 'w15BCount') {
+                    b.description = ProductsEnum.W15B.valueOf();
+                    this.bestandList.push(b);
+                }
+                if (key === 'wlCount') {
+                    b.description = ProductsEnum.WL.valueOf();
+                    this.bestandList.push(b);
+                }
+                if (key === 'c2BCount') {
+                    b.description = ProductsEnum.C2B.valueOf();
+                    this.bestandList.push(b);
+                }
+                if (key === 'c5BCount') {
+                    b.description = ProductsEnum.C5B.valueOf();
+                    this.bestandList.push(b);
+                }
+                if (key === 'c15BCount') {
+                    b.description = ProductsEnum.C15B.valueOf();
+                    this.bestandList.push(b);
+                }
+                if (key === 'clCount') {
+                    b.description = ProductsEnum.CL.valueOf();
+                    this.bestandList.push(b);
+                }
+
+            }
+
+        }
+       // console.log(this.bestandList);
 
     }
 
@@ -57,21 +129,31 @@ export class DashboardComponent implements OnInit {
         console.log(" DashboardComponent -> getOrders()");
         try {
             const response = await this.bestellungenService.getAllOrder();
-            console.log(response);
+            //  console.log(response);
 
             this.ordersToday = this.bestellungenService.ordersToday;
-            this.ordersTodayCount = Object.keys(this.ordersTodayCount).length;
+            this.ordersTodayCount = Object.keys(this.ordersToday).length;
+
+            this.ordersTommorow = this.bestellungenService.ordersTommorow;
+            this.ordersTommorowCount = Object.keys(this.ordersTommorow).length;
+
+            this.ordersAfterTommorow = this.bestellungenService.ordersAfterTommorow;
+            this.ordersAfterTommorowCount = Object.keys(this.ordersAfterTommorow).length;
 
             this.ordersAll = this.bestellungenService.ordersAll;
             this.ordersAllCount = Object.keys(this.ordersAll).length;
 
-            console.log( this.ordersToday.toString);
-            console.log( this.ordersAll.toString);
-
+            /*
+             console.log( this.ordersToday);
+             console.log( this.ordersTommorow);
+             console.log( this.ordersAfterTommorow);
+             console.log( this.ordersAll);
+*/
         } catch (err) {
             console.log(err);
             return;
         }
     }
+
 
 }
