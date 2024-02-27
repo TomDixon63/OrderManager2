@@ -52,30 +52,23 @@ export class DashboardComponent implements OnInit {
     ngOnInit() {
         console.log(" DashboardComponent -> ngOnInit()");
         this.loading = false;
-
-        this.getOrders();
-       
+     
         this.getLagerBestand();
 
-
+        this.getOrders();
 
     }
 
      getLagerBestand() {
         console.log("DashboardComponent ->  getBestand()");
         this.http.get<any>(environment.nodeserverget).subscribe(data => {
-            console.log(data);
+      //      console.log(data);
             this.mapResponseLagerBestand(data);
         });
     }
 
 
-    private getBestaende(){
-
-
-
-
-    }
+  
     private mapResponseLagerBestand(response: any) {
         console.log("DashboardComponent ->  mapResponseGetBestand()");
         for (const key in response) {

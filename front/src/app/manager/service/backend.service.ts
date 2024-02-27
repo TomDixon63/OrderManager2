@@ -14,6 +14,7 @@ export class BackendService {
 
   private contact_endpoint_with_address: string = "/Contact?embed=addresses";
   private order_endpoint_with_status_500_and_positions: string = "/Order?status=500&embed=positions";
+  private invoices: string = "/Invoice?embed=positions";
 
   private SLASH: string = "/";
 
@@ -64,6 +65,15 @@ export class BackendService {
    }*/
   }
 
-  // --------------------------------------------------- Node Server
+  //get all Invoices with Positions
+  // https://my.sevdesk.de/api/v1/Invoice?embed=positions&token=4bf578db00dbd24146a33a72f2ab8272 
+  public getAllInvoices() {
+    console.log(" BackendService ->getInvoices()");
+    let url: string = this.baseUrl.concat(this.invoices).concat(this.AMPERSAND).concat(this.securityToken);
+    return this.http.get(url);
+
+  }
+
+
 
 }
